@@ -1,0 +1,13 @@
+{
+  "name": "fish-diary",
+  "version": "1.0.0",
+  "description": "养鱼日记微信小程序",
+  "scripts": {
+    "sync": "node cloudfunctions/sync-shared.js",
+    "sync:check": "node cloudfunctions/sync-shared.js --check"
+  },
+  "devDependencies": {
+    "miniprogram-api-typings": "^3.12.3",
+    "xlsx": "^0.18.5"
+  }
+}

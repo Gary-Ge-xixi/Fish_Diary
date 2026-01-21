@@ -1,0 +1,467 @@
+{
+  "envId": "cloudbase-9gnb2cyn0387e399",
+  "cloudPathPrefix": "fish-species",
+  "totalImages": 115,
+  "images": [
+    {
+      "filename": "fish_001_carassius.jpg",
+      "cloudPath": "fish-species/fish_001_carassius.jpg"
+    },
+    {
+      "filename": "fish_002_carassius.jpg",
+      "cloudPath": "fish-species/fish_002_carassius.jpg"
+    },
+    {
+      "filename": "fish_baidu_泰狮_carassius.jpg",
+      "cloudPath": "fish-species/fish_baidu_泰狮_carassius.jpg"
+    },
+    {
+      "filename": "fish_004_carassius.jpg",
+      "cloudPath": "fish-species/fish_004_carassius.jpg"
+    },
+    {
+      "filename": "fish_005_carassius.jpg",
+      "cloudPath": "fish-species/fish_005_carassius.jpg"
+    },
+    {
+      "filename": "fish_006_carassius.jpg",
+      "cloudPath": "fish-species/fish_006_carassius.jpg"
+    },
+    {
+      "filename": "fish_007_carassius.jpg",
+      "cloudPath": "fish-species/fish_007_carassius.jpg"
+    },
+    {
+      "filename": "fish_008_carassius.jpg",
+      "cloudPath": "fish-species/fish_008_carassius.jpg"
+    },
+    {
+      "filename": "fish_009_carassius.jpg",
+      "cloudPath": "fish-species/fish_009_carassius.jpg"
+    },
+    {
+      "filename": "fish_baidu_土佐金_carassius.jpg",
+      "cloudPath": "fish-species/fish_baidu_土佐金_carassius.jpg"
+    },
+    {
+      "filename": "fish_011_cyprinus.jpg",
+      "cloudPath": "fish-species/fish_011_cyprinus.jpg"
+    },
+    {
+      "filename": "fish_012_cyprinus.jpg",
+      "cloudPath": "fish-species/fish_012_cyprinus.jpg"
+    },
+    {
+      "filename": "fish_013_cyprinus.jpg",
+      "cloudPath": "fish-species/fish_013_cyprinus.jpg"
+    },
+    {
+      "filename": "fish_014_cyprinus.jpg",
+      "cloudPath": "fish-species/fish_014_cyprinus.jpg"
+    },
+    {
+      "filename": "fish_015_cyprinus.jpg",
+      "cloudPath": "fish-species/fish_015_cyprinus.jpg"
+    },
+    {
+      "filename": "fish_baidu_中国斗鱼_macropodus.jpg",
+      "cloudPath": "fish-species/fish_baidu_中国斗鱼_macropodus.jpg"
+    },
+    {
+      "filename": "fish_baidu_圆尾斗鱼_macropodus.jpg",
+      "cloudPath": "fish-species/fish_baidu_圆尾斗鱼_macropodus.jpg"
+    },
+    {
+      "filename": "fish_018_tanichthys.jpg",
+      "cloudPath": "fish-species/fish_018_tanichthys.jpg"
+    },
+    {
+      "filename": "fish_baidu_鳑鲏_rhodeus.jpg",
+      "cloudPath": "fish-species/fish_baidu_鳑鲏_rhodeus.jpg"
+    },
+    {
+      "filename": "fish_baidu_宽鳍鱲_zacco.jpg",
+      "cloudPath": "fish-species/fish_baidu_宽鳍鱲_zacco.jpg"
+    },
+    {
+      "filename": "fish_021_paracheirodon.jpg",
+      "cloudPath": "fish-species/fish_021_paracheirodon.jpg"
+    },
+    {
+      "filename": "fish_022_paracheirodon.jpg",
+      "cloudPath": "fish-species/fish_022_paracheirodon.jpg"
+    },
+    {
+      "filename": "fish_baidu_红鼻剪刀_hemigrammus.jpg",
+      "cloudPath": "fish-species/fish_baidu_红鼻剪刀_hemigrammus.jpg"
+    },
+    {
+      "filename": "fish_final_黑幻影_hyphessobrycon.jpg",
+      "cloudPath": "fish-species/fish_final_黑幻影_hyphessobrycon.jpg"
+    },
+    {
+      "filename": "fish_baidu_帝王灯_nematobrycon.jpg",
+      "cloudPath": "fish-species/fish_baidu_帝王灯_nematobrycon.jpg"
+    },
+    {
+      "filename": "fish_final_扯旗鱼_hyphessobrycon.jpg",
+      "cloudPath": "fish-species/fish_final_扯旗鱼_hyphessobrycon.jpg"
+    },
+    {
+      "filename": "fish_baidu_黑莲灯_hyphessobrycon.jpg",
+      "cloudPath": "fish-species/fish_baidu_黑莲灯_hyphessobrycon.jpg"
+    },
+    {
+      "filename": "fish_final_金丝灯_hemigrammus.jpg",
+      "cloudPath": "fish-species/fish_final_金丝灯_hemigrammus.jpg"
+    },
+    {
+      "filename": "fish_baidu_柠檬灯_hyphessobrycon.jpg",
+      "cloudPath": "fish-species/fish_baidu_柠檬灯_hyphessobrycon.jpg"
+    },
+    {
+      "filename": "fish_baidu_企鹅灯_thayeria.jpg",
+      "cloudPath": "fish-species/fish_baidu_企鹅灯_thayeria.jpg"
+    },
+    {
+      "filename": "fish_baidu_玻璃拉拉_parambassis.jpg",
+      "cloudPath": "fish-species/fish_baidu_玻璃拉拉_parambassis.jpg"
+    },
+    {
+      "filename": "fish_baidu_三角灯_trigonostigma.jpg",
+      "cloudPath": "fish-species/fish_baidu_三角灯_trigonostigma.jpg"
+    },
+    {
+      "filename": "fish_final_一线长虹_hemigrammus.jpg",
+      "cloudPath": "fish-species/fish_final_一线长虹_hemigrammus.jpg"
+    },
+    {
+      "filename": "fish_baidu_红腹食人鱼_pygocentrus.jpg",
+      "cloudPath": "fish-species/fish_baidu_红腹食人鱼_pygocentrus.jpg"
+    },
+    {
+      "filename": "fish_baidu_银板_metynnis.jpg",
+      "cloudPath": "fish-species/fish_baidu_银板_metynnis.jpg"
+    },
+    {
+      "filename": "fish_final_枯叶鱼_monocirrhus.jpg",
+      "cloudPath": "fish-species/fish_final_枯叶鱼_monocirrhus.jpg"
+    },
+    {
+      "filename": "fish_037_danio.jpg",
+      "cloudPath": "fish-species/fish_037_danio.jpg"
+    },
+    {
+      "filename": "fish_038_puntigrus.jpg",
+      "cloudPath": "fish-species/fish_038_puntigrus.jpg"
+    },
+    {
+      "filename": "fish_039_puntius.jpg",
+      "cloudPath": "fish-species/fish_039_puntius.jpg"
+    },
+    {
+      "filename": "fish_baidu_一眉道人_sahyadria.jpg",
+      "cloudPath": "fish-species/fish_baidu_一眉道人_sahyadria.jpg"
+    },
+    {
+      "filename": "fish_041_mikrogeophagus.jpg",
+      "cloudPath": "fish-species/fish_041_mikrogeophagus.jpg"
+    },
+    {
+      "filename": "fish_baidu_五点铅笔_nannostomus.jpg",
+      "cloudPath": "fish-species/fish_baidu_五点铅笔_nannostomus.jpg"
+    },
+    {
+      "filename": "fish_final_小丑罗汉_chromobotia.jpg",
+      "cloudPath": "fish-species/fish_final_小丑罗汉_chromobotia.jpg"
+    },
+    {
+      "filename": "fish_044_poecilia.jpg",
+      "cloudPath": "fish-species/fish_044_poecilia.jpg"
+    },
+    {
+      "filename": "fish_045_poecilia.jpg",
+      "cloudPath": "fish-species/fish_045_poecilia.jpg"
+    },
+    {
+      "filename": "fish_baidu_米奇鱼_xiphophorus.jpg",
+      "cloudPath": "fish-species/fish_baidu_米奇鱼_xiphophorus.jpg"
+    },
+    {
+      "filename": "fish_baidu_红剑_xiphophorus.jpg",
+      "cloudPath": "fish-species/fish_baidu_红剑_xiphophorus.jpg"
+    },
+    {
+      "filename": "fish_048_poecilia.jpg",
+      "cloudPath": "fish-species/fish_048_poecilia.jpg"
+    },
+    {
+      "filename": "fish_final_球玛丽_poecilia.jpg",
+      "cloudPath": "fish-species/fish_final_球玛丽_poecilia.jpg"
+    },
+    {
+      "filename": "fish_final_皮球银玛丽_poecilia.jpg",
+      "cloudPath": "fish-species/fish_final_皮球银玛丽_poecilia.jpg"
+    },
+    {
+      "filename": "fish_baidu_泰国斗鱼_betta.jpg",
+      "cloudPath": "fish-species/fish_baidu_泰国斗鱼_betta.jpg"
+    },
+    {
+      "filename": "fish_baidu_半月斗鱼_betta.jpg",
+      "cloudPath": "fish-species/fish_baidu_半月斗鱼_betta.jpg"
+    },
+    {
+      "filename": "fish_baidu_将军斗鱼_betta.jpg",
+      "cloudPath": "fish-species/fish_baidu_将军斗鱼_betta.jpg"
+    },
+    {
+      "filename": "fish_baidu_珍珠马甲_trichopodus.jpg",
+      "cloudPath": "fish-species/fish_baidu_珍珠马甲_trichopodus.jpg"
+    },
+    {
+      "filename": "fish_baidu_丽丽鱼_trichogaster.jpg",
+      "cloudPath": "fish-species/fish_baidu_丽丽鱼_trichogaster.jpg"
+    },
+    {
+      "filename": "fish_baidu_蓝曼龙_trichopodus.jpg",
+      "cloudPath": "fish-species/fish_baidu_蓝曼龙_trichopodus.jpg"
+    },
+    {
+      "filename": "fish_baidu_接吻鱼_helostoma.jpg",
+      "cloudPath": "fish-species/fish_baidu_接吻鱼_helostoma.jpg"
+    },
+    {
+      "filename": "fish_baidu_巧克力飞船_sphaerichthys.jpg",
+      "cloudPath": "fish-species/fish_baidu_巧克力飞船_sphaerichthys.jpg"
+    },
+    {
+      "filename": "fish_059_channa.jpg",
+      "cloudPath": "fish-species/fish_059_channa.jpg"
+    },
+    {
+      "filename": "fish_060_channa.jpg",
+      "cloudPath": "fish-species/fish_060_channa.jpg"
+    },
+    {
+      "filename": "fish_061_channa.jpg",
+      "cloudPath": "fish-species/fish_061_channa.jpg"
+    },
+    {
+      "filename": "fish_062_channa.jpg",
+      "cloudPath": "fish-species/fish_062_channa.jpg"
+    },
+    {
+      "filename": "fish_baidu_神仙鱼_pterophyllum.jpg",
+      "cloudPath": "fish-species/fish_baidu_神仙鱼_pterophyllum.jpg"
+    },
+    {
+      "filename": "fish_064_pterophyllum.jpg",
+      "cloudPath": "fish-species/fish_064_pterophyllum.jpg"
+    },
+    {
+      "filename": "fish_baidu_七彩神仙_symphysodon.jpg",
+      "cloudPath": "fish-species/fish_baidu_七彩神仙_symphysodon.jpg"
+    },
+    {
+      "filename": "fish_066_mikrogeophagus.jpg",
+      "cloudPath": "fish-species/fish_066_mikrogeophagus.jpg"
+    },
+    {
+      "filename": "fish_final_波利维亚凤凰_mikrogeophagus.jpg",
+      "cloudPath": "fish-species/fish_final_波利维亚凤凰_mikrogeophagus.jpg"
+    },
+    {
+      "filename": "fish_final_阿凡达短鲷_apistogramma.jpg",
+      "cloudPath": "fish-species/fish_final_阿凡达短鲷_apistogramma.jpg"
+    },
+    {
+      "filename": "fish_final_金宝短鲷_apistogramma.jpg",
+      "cloudPath": "fish-species/fish_final_金宝短鲷_apistogramma.jpg"
+    },
+    {
+      "filename": "fish_070_astronotus.jpg",
+      "cloudPath": "fish-species/fish_070_astronotus.jpg"
+    },
+    {
+      "filename": "fish_071_hybrid.jpg",
+      "cloudPath": "fish-species/fish_071_hybrid.jpg"
+    },
+    {
+      "filename": "fish_072_hybrid.jpg",
+      "cloudPath": "fish-species/fish_072_hybrid.jpg"
+    },
+    {
+      "filename": "fish_073_thorichthys.jpg",
+      "cloudPath": "fish-species/fish_073_thorichthys.jpg"
+    },
+    {
+      "filename": "fish_074_andinoacara.jpg",
+      "cloudPath": "fish-species/fish_074_andinoacara.jpg"
+    },
+    {
+      "filename": "fish_baidu_特蓝斑马_maylandia.jpg",
+      "cloudPath": "fish-species/fish_baidu_特蓝斑马_maylandia.jpg"
+    },
+    {
+      "filename": "fish_baidu_雪鲷_pseudotropheus.jpg",
+      "cloudPath": "fish-species/fish_baidu_雪鲷_pseudotropheus.jpg"
+    },
+    {
+      "filename": "fish_final_黄统领_labidochromis.jpg",
+      "cloudPath": "fish-species/fish_final_黄统领_labidochromis.jpg"
+    },
+    {
+      "filename": "fish_baidu_阿里_sciaenochromis.jpg",
+      "cloudPath": "fish-species/fish_baidu_阿里_sciaenochromis.jpg"
+    },
+    {
+      "filename": "fish_baidu_萨伊蓝六间_cyphotilapia.jpg",
+      "cloudPath": "fish-species/fish_baidu_萨伊蓝六间_cyphotilapia.jpg"
+    },
+    {
+      "filename": "fish_baidu_卷贝鱼_neolamprologus.jpg",
+      "cloudPath": "fish-species/fish_baidu_卷贝鱼_neolamprologus.jpg"
+    },
+    {
+      "filename": "fish_baidu_熊猫鼠_corydoras.jpg",
+      "cloudPath": "fish-species/fish_baidu_熊猫鼠_corydoras.jpg"
+    },
+    {
+      "filename": "fish_baidu_咖啡鼠_corydoras.jpg",
+      "cloudPath": "fish-species/fish_baidu_咖啡鼠_corydoras.jpg"
+    },
+    {
+      "filename": "fish_final_珍珠鼠_corydoras.jpg",
+      "cloudPath": "fish-species/fish_final_珍珠鼠_corydoras.jpg"
+    },
+    {
+      "filename": "fish_baidu_白鼠_corydoras.jpg",
+      "cloudPath": "fish-species/fish_baidu_白鼠_corydoras.jpg"
+    },
+    {
+      "filename": "fish_baidu_金线绿鼠_corydoras.jpg",
+      "cloudPath": "fish-species/fish_baidu_金线绿鼠_corydoras.jpg"
+    },
+    {
+      "filename": "fish_088_ancistrus.jpg",
+      "cloudPath": "fish-species/fish_088_ancistrus.jpg"
+    },
+    {
+      "filename": "fish_baidu_直升机_farlowella.jpg",
+      "cloudPath": "fish-species/fish_baidu_直升机_farlowella.jpg"
+    },
+    {
+      "filename": "fish_baidu_皇冠豹_panaque.jpg",
+      "cloudPath": "fish-species/fish_baidu_皇冠豹_panaque.jpg"
+    },
+    {
+      "filename": "fish_091_hypancistrus.jpg",
+      "cloudPath": "fish-species/fish_091_hypancistrus.jpg"
+    },
+    {
+      "filename": "fish_092_baryancistrus.jpg",
+      "cloudPath": "fish-species/fish_092_baryancistrus.jpg"
+    },
+    {
+      "filename": "fish_093_ancistrus.jpg",
+      "cloudPath": "fish-species/fish_093_ancistrus.jpg"
+    },
+    {
+      "filename": "fish_094_osteoglossum.jpg",
+      "cloudPath": "fish-species/fish_094_osteoglossum.jpg"
+    },
+    {
+      "filename": "fish_baidu_金龙_scleropages.jpg",
+      "cloudPath": "fish-species/fish_baidu_金龙_scleropages.jpg"
+    },
+    {
+      "filename": "fish_baidu_红龙_scleropages.jpg",
+      "cloudPath": "fish-species/fish_baidu_红龙_scleropages.jpg"
+    },
+    {
+      "filename": "fish_097_arapaima.jpg",
+      "cloudPath": "fish-species/fish_097_arapaima.jpg"
+    },
+    {
+      "filename": "fish_098_osphronemus.jpg",
+      "cloudPath": "fish-species/fish_098_osphronemus.jpg"
+    },
+    {
+      "filename": "fish_099_potamotrygon.jpg",
+      "cloudPath": "fish-species/fish_099_potamotrygon.jpg"
+    },
+    {
+      "filename": "fish_100_datnioides.jpg",
+      "cloudPath": "fish-species/fish_100_datnioides.jpg"
+    },
+    {
+      "filename": "fish_101_polypterus.jpg",
+      "cloudPath": "fish-species/fish_101_polypterus.jpg"
+    },
+    {
+      "filename": "fish_102_atractosteus.jpg",
+      "cloudPath": "fish-species/fish_102_atractosteus.jpg"
+    },
+    {
+      "filename": "fish_103_protopterus.jpg",
+      "cloudPath": "fish-species/fish_103_protopterus.jpg"
+    },
+    {
+      "filename": "fish_104_electrophorus.jpg",
+      "cloudPath": "fish-species/fish_104_electrophorus.jpg"
+    },
+    {
+      "filename": "fish_baidu_公子小丑_amphiprion.jpg",
+      "cloudPath": "fish-species/fish_baidu_公子小丑_amphiprion.jpg"
+    },
+    {
+      "filename": "fish_106_amphiprion.jpg",
+      "cloudPath": "fish-species/fish_106_amphiprion.jpg"
+    },
+    {
+      "filename": "fish_baidu_透红小丑_premnas.jpg",
+      "cloudPath": "fish-species/fish_baidu_透红小丑_premnas.jpg"
+    },
+    {
+      "filename": "fish_108_chrysiptera.jpg",
+      "cloudPath": "fish-species/fish_108_chrysiptera.jpg"
+    },
+    {
+      "filename": "fish_109_dascyllus.jpg",
+      "cloudPath": "fish-species/fish_109_dascyllus.jpg"
+    },
+    {
+      "filename": "fish_baidu_雷达_nemateleotris.jpg",
+      "cloudPath": "fish-species/fish_baidu_雷达_nemateleotris.jpg"
+    },
+    {
+      "filename": "fish_final_医生虾_lysmata.jpg",
+      "cloudPath": "fish-species/fish_final_医生虾_lysmata.jpg"
+    },
+    {
+      "filename": "fish_112_paracanthurus.jpg",
+      "cloudPath": "fish-species/fish_112_paracanthurus.jpg"
+    },
+    {
+      "filename": "fish_baidu_黄金吊_zebrasoma.jpg",
+      "cloudPath": "fish-species/fish_baidu_黄金吊_zebrasoma.jpg"
+    },
+    {
+      "filename": "fish_final_粉蓝吊_acanthurus.jpg",
+      "cloudPath": "fish-species/fish_final_粉蓝吊_acanthurus.jpg"
+    },
+    {
+      "filename": "fish_baidu_火焰仙_centropyge.jpg",
+      "cloudPath": "fish-species/fish_baidu_火焰仙_centropyge.jpg"
+    },
+    {
+      "filename": "fish_baidu_马鞍神仙_pomacanthus.jpg",
+      "cloudPath": "fish-species/fish_baidu_马鞍神仙_pomacanthus.jpg"
+    },
+    {
+      "filename": "fish_baidu_狮子鱼_pterois.jpg",
+      "cloudPath": "fish-species/fish_baidu_狮子鱼_pterois.jpg"
+    }
+  ]
+}

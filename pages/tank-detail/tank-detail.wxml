@@ -1,0 +1,150 @@
+<view class="page-container">
+  <view class="nav-wrapper" style="height: 91px; overflow: hidden; background: #fff;">
+    <navigation-bar title="鱼缸详情" back="{{true}}" color="black" background="#fff"></navigation-bar>
+  </view>
+
+  <!-- 加载状态 - 骨架屏 -->
+  <view class="skeleton-loading" wx:if="{{loading}}">
+    <!-- 封面骨架屏 -->
+    <view class="skeleton-hero"></view>
+
+    <!-- 基础信息卡片骨架屏 -->
+    <view class="section">
+      <view class="card">
+        <view class="skeleton-row" wx:for="{{[1,2,3]}}" wx:key="*this">
+          <view class="skeleton-label"></view>
+          <view class="skeleton-value"></view>
+        </view>
+        <view class="skeleton-btn"></view>
+      </view>
+    </view>
+
+    <!-- 死亡档案骨架屏 -->
+    <view class="section">
+      <view class="skeleton-header"></view>
+      <view class="skeleton-list-item" wx:for="{{[1,2]}}" wx:key="*this">
+        <view class="skeleton-icon"></view>
+        <view class="skeleton-content">
+          <view class="skeleton-line short"></view>
+          <view class="skeleton-line medium"></view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <scroll-view class="page-scroll" scroll-y enhanced show-scrollbar="{{false}}" wx:if="{{tank && !loading}}">
+    <!-- 封面图 - 点击可更换 -->
+    <view class="hero-image-wrapper" bindtap="onChangeCover">
+       <image wx:if="{{tank.coverUrl}}" src="{{tank.coverUrl}}" mode="aspectFill" class="hero-image"></image>
+       <view wx:else class="hero-placeholder">🐠</view>
+       <view class="hero-overlay">
+          <text class="hero-title">{{tank.name}}</text>
+       </view>
+       <view class="hero-edit-hint">
+          <image class="hero-edit-icon" src="/assets/icons/camera.svg" mode="aspectFit" />
+          <text>点击更换封面</text>
+       </view>
+    </view>
+
+    <!-- 基础信息 -->
+    <view class="section">
+       <view class="card">
+          <view class="card-row">
+             <text class="label">尺寸</text>
+             <text class="value" wx:if="{{tank.size}}">{{tank.size.length}}x{{tank.size.width}}x{{tank.size.height}} cm</text>
+             <text class="value" wx:else>未设置</text>
+          </view>
+          <view class="card-row">
+             <text class="label">购买价格</text>
+             <text class="value">¥{{tank.price || 0}}</text>
+          </view>
+          <view class="card-row">
+             <text class="label">总投入</text>
+             <text class="value font-bold">¥{{stats.totalInvestment || 0}}</text>
+          </view>
+
+          <view class="action-row">
+             <button class="btn btn--outline btn--sm" bindtap="onEditTank">编辑信息</button>
+          </view>
+       </view>
+    </view>
+
+    <!-- 死亡档案 -->
+    <view class="section">
+       <view class="section-header">
+          <text class="section-title">死亡档案</text>
+          <text class="text-muted text-sm">共 {{stats.fish.deadCount || 0}} 条</text>
+       </view>
+
+       <view class="death-list" wx:if="{{deathList.length > 0}}">
+          <view class="death-item" wx:for="{{deathList}}" wx:key="_id">
+             <view class="death-icon">🪦</view>
+             <view class="death-info">
+                <text class="death-name">{{item.customName}}</text>
+                <text class="death-date">购入: {{item.purchaseDate}}</text>
+             </view>
+             <view class="death-stat">
+                <text class="death-count">-{{item.quantity}}</text>
+                <text class="death-price">¥{{item.purchasePrice * item.quantity}}</text>
+             </view>
+          </view>
+       </view>
+       <view class="empty-state" wx:else>
+          <text class="text-muted">暂无死亡记录，继续保持！</text>
+       </view>
+    </view>
+
+    <view class="safe-area-bottom"></view>
+  </scroll-view>
+
+  <!-- 编辑弹窗 - 使用 page-container 组件 -->
+  <page-container
+    show="{{showEditPopup}}"
+    round
+    position="bottom"
+    custom-style="background-color: #fff;"
+    bind:afterleave="onCloseEditPopup"
+  >
+    <view class="popup-content">
+      <!-- 头部 -->
+      <view class="popup__header">
+        <text class="popup__close" bindtap="onCloseEditPopup">×</text>
+        <text class="popup__title">编辑鱼缸</text>
+        <view class="popup__placeholder"></view>
+      </view>
+
+      <!-- 表单内容 -->
+      <scroll-view class="popup__body" scroll-y enhanced show-scrollbar="{{false}}">
+        <view class="form-wrapper">
+          <!-- 鱼缸名称 -->
+          <view class="form-item">
+            <text class="form-label">鱼缸名称 <text class="required">*</text></text>
+            <input class="input" placeholder="请输入名称（20字以内）" maxlength="20" value="{{editForm.name}}" data-field="name" bindinput="onEditFormInput"></input>
+          </view>
+
+          <!-- 购买价格 -->
+          <view class="form-item">
+            <text class="form-label">购买价格 (¥)</text>
+            <input class="input" type="digit" placeholder="0.00" value="{{editForm.price}}" data-field="price" bindinput="onEditFormInput"></input>
+          </view>
+
+          <!-- 鱼缸尺寸 - 只读展示 -->
+          <view class="form-item">
+            <text class="form-label">鱼缸尺寸</text>
+            <view class="size-display">
+              <text class="size-display__label">{{sizeDisplay.label}}</text>
+              <text class="size-display__desc" wx:if="{{sizeDisplay.desc}}">{{sizeDisplay.desc}}</text>
+            </view>
+            <text class="form-hint">尺寸在创建时确定，不可修改</text>
+          </view>
+        </view>
+      </scroll-view>
+
+      <!-- 底部按钮 -->
+      <view class="popup__footer">
+        <button class="btn btn--outline" bindtap="onDeleteTank" disabled="{{saving}}">删除鱼缸</button>
+        <button class="btn btn--primary" bindtap="onSaveEdit" loading="{{saving}}" disabled="{{saving}}">保存</button>
+      </view>
+    </view>
+  </page-container>
+</view>

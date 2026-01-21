@@ -1,0 +1,33 @@
+<view class="page-container">
+  <navigation-bar title="个人中心" back="{{false}}" color="black" background="#fff"></navigation-bar>
+
+  <view class="user-section">
+     <button class="avatar-wrapper" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
+       <image wx:if="{{userInfo.avatarUrl}}" class="avatar" src="{{userInfo.avatarUrl}}"></image>
+       <view wx:else class="avatar avatar-placeholder">🐟</view>
+     </button>
+     <input type="nickname" class="nickname-input" placeholder="请输入昵称" value="{{userInfo.nickName}}" bind:change="onInputChange" />
+  </view>
+
+  <view class="menu-list-full">
+     <button class="menu-item-full" open-type="feedback">
+        <text class="menu-title">意见反馈</text>
+        <image class="arrow-icon" src="/assets/icons/chevron-right.svg" mode="aspectFit" />
+     </button>
+     <button class="menu-item-full" open-type="share">
+        <text class="menu-title">分享给鱼友</text>
+        <image class="arrow-icon" src="/assets/icons/chevron-right.svg" mode="aspectFit" />
+     </button>
+     <view class="menu-item-full" bindtap="onClearCache">
+        <text class="menu-title">清除缓存</text>
+        <image class="arrow-icon" src="/assets/icons/chevron-right.svg" mode="aspectFit" />
+     </view>
+  </view>
+  
+  <view class="footer">
+     <text class="version">Fish Diary v1.0.0</text>
+     <text class="brand-text">用心记录每一条鱼的故事</text>
+  </view>
+
+  <view class="safe-area-bottom"></view>
+</view>

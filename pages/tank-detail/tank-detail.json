@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "鱼缸详情",
+  "navigationBarBackgroundColor": "#ffffff",
+  "usingComponents": {
+    "navigation-bar": "/components/navigation-bar/navigation-bar"
+  }
+}

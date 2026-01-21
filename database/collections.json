@@ -1,0 +1,160 @@
+{
+  "collections": [
+    {
+      "name": "users",
+      "description": "用户表",
+      "indexes": [
+        { "field": "openid", "unique": true }
+      ]
+    },
+    {
+      "name": "tanks",
+      "description": "鱼缸表",
+      "indexes": [
+        { "field": "userId", "unique": false },
+        { "field": ["userId", "status"], "unique": false },
+        { "field": ["userId", "createdAt"], "unique": false }
+      ]
+    },
+    {
+      "name": "fish",
+      "description": "鱼类表",
+      "indexes": [
+        { "field": "userId", "unique": false },
+        { "field": "tankId", "unique": false },
+        { "field": ["tankId", "status"], "unique": false },
+        { "field": ["userId", "status"], "unique": false }
+      ]
+    },
+    {
+      "name": "fish_categories",
+      "description": "鱼类大分类表",
+      "indexes": [
+        { "field": "name", "unique": true },
+        { "field": "slug", "unique": true },
+        { "field": "order", "unique": false }
+      ]
+    },
+    {
+      "name": "fish_subcategories",
+      "description": "鱼类子分类表",
+      "indexes": [
+        { "field": "categoryId", "unique": false },
+        { "field": "slug", "unique": true },
+        { "field": "order", "unique": false }
+      ]
+    },
+    {
+      "name": "fish_species",
+      "description": "鱼种库（含产地、食性、混养性等扩展字段）",
+      "fields": {
+        "name": "string - 中文名",
+        "englishName": "string - 英文名",
+        "scientificName": "string - 学名",
+        "subcategoryId": "string - 子分类ID",
+        "categoryId": "string - 大分类ID",
+        "origin": "string - 产地",
+        "difficulty": "enum(easy,medium,hard) - 难度",
+        "tempMin": "number - 最低温度",
+        "tempMax": "number - 最高温度",
+        "phMin": "number - 最低pH",
+        "phMax": "number - 最高pH",
+        "bodyLengthMin": "number - 最小体长(cm)",
+        "bodyLengthMax": "number - 最大体长(cm)",
+        "lifespan": "string - 寿命",
+        "diet": "string - 食性",
+        "compatibility": "string - 混养兼容性",
+        "temperament": "enum(peaceful,semi-aggressive,aggressive) - 性格",
+        "description": "string - 简介",
+        "careTip": "string - 饲养技巧",
+        "environment": "string - 环境要求",
+        "husbandryFeatures": "string - 饲养特点",
+        "notes": "string - 注意事项",
+        "imageUrl": "string - 图片URL",
+        "isVerified": "boolean - 是否验证",
+        "source": "enum(preset,user) - 数据来源"
+      },
+      "indexes": [
+        { "field": "name", "unique": false },
+        { "field": "subcategoryId", "unique": false },
+        { "field": "categoryId", "unique": false },
+        { "field": "isVerified", "unique": false },
+        { "field": "difficulty", "unique": false },
+        { "field": "origin", "unique": false },
+        { "field": "diet", "unique": false },
+        { "field": "temperament", "unique": false }
+      ]
+    },
+    {
+      "name": "fish_care_tips",
+      "description": "鱼类养殖经验表",
+      "indexes": [
+        { "field": "speciesId", "unique": false },
+        { "field": ["speciesId", "tipType"], "unique": false },
+        { "field": "importance", "unique": false }
+      ]
+    },
+    {
+      "name": "equipment",
+      "description": "设备表",
+      "indexes": [
+        { "field": "userId", "unique": false },
+        { "field": "tankId", "unique": false },
+        { "field": ["tankId", "type"], "unique": false }
+      ]
+    },
+    {
+      "name": "feeding_records",
+      "description": "喂食记录表",
+      "indexes": [
+        { "field": "userId", "unique": false },
+        { "field": "tankId", "unique": false },
+        { "field": ["tankId", "feedTime"], "unique": false }
+      ]
+    },
+    {
+      "name": "feeding_schedules",
+      "description": "喂食计划表",
+      "indexes": [
+        { "field": "userId", "unique": false },
+        { "field": "tankId", "unique": false },
+        { "field": ["enabled", "nextTrigger"], "unique": false }
+      ]
+    },
+    {
+      "name": "water_change_records",
+      "description": "换水记录表",
+      "indexes": [
+        { "field": "userId", "unique": false },
+        { "field": "tankId", "unique": false },
+        { "field": ["tankId", "changeDate"], "unique": false }
+      ]
+    },
+    {
+      "name": "water_change_schedules",
+      "description": "换水计划表",
+      "indexes": [
+        { "field": "userId", "unique": false },
+        { "field": "tankId", "unique": false },
+        { "field": ["enabled", "nextTrigger"], "unique": false }
+      ]
+    },
+    {
+      "name": "water_quality_records",
+      "description": "水质记录表",
+      "indexes": [
+        { "field": "userId", "unique": false },
+        { "field": "tankId", "unique": false },
+        { "field": ["tankId", "recordDate"], "unique": false }
+      ]
+    },
+    {
+      "name": "subscriptions",
+      "description": "订阅消息授权记录",
+      "indexes": [
+        { "field": "userId", "unique": false },
+        { "field": ["userId", "templateId"], "unique": false }
+      ]
+    }
+  ]
+}

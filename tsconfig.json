@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "declaration": false,
+    "lib": ["ES2017"],
+    "typeRoots": ["./typings", "./node_modules/@types"],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./*"]
+    }
+  },
+  "include": [
+    "**/*.ts",
+    "typings/**/*.d.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "cloudfunctions"
+  ]
+}

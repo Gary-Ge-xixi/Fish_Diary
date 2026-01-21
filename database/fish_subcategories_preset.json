@@ -1,0 +1,236 @@
+[
+  {
+    "_id": "subcat_goldfish",
+    "categoryId": "cat_coldwater",
+    "name": "金鱼",
+    "slug": "goldfish",
+    "description": "中国传统观赏鱼，品种繁多",
+    "order": 1,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "subcat_koi_native",
+    "categoryId": "cat_coldwater",
+    "name": "锦鲤/原生",
+    "slug": "koi-native",
+    "description": "锦鲤和中国原生冷水鱼类",
+    "order": 2,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "subcat_native_betta",
+    "categoryId": "cat_labyrinth",
+    "name": "原生斗鱼",
+    "slug": "native-betta",
+    "description": "中国原生斗鱼，如圆尾斗鱼、叉尾斗鱼",
+    "order": 1,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "subcat_common_labyrinth",
+    "categoryId": "cat_labyrinth",
+    "name": "常见",
+    "slug": "common-labyrinth",
+    "description": "泰斗、丽丽鱼、珍珠马甲等常见迷鳃鱼",
+    "order": 2,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "subcat_snakehead",
+    "categoryId": "cat_labyrinth",
+    "name": "雷龙",
+    "slug": "snakehead",
+    "description": "小型雷龙鱼，色彩艳丽",
+    "order": 3,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "subcat_sa_small",
+    "categoryId": "cat_characin",
+    "name": "南美小型",
+    "slug": "sa-small",
+    "description": "红绿灯、宝莲灯等南美小型灯鱼",
+    "order": 1,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "subcat_other_characin",
+    "categoryId": "cat_characin",
+    "name": "其他加拉辛",
+    "slug": "other-characin",
+    "description": "银板、食人鱼等其他加拉辛科鱼类",
+    "order": 2,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "subcat_popular_small",
+    "categoryId": "cat_cyprinid",
+    "name": "热门小型",
+    "slug": "popular-small",
+    "description": "斑马鱼、虎皮鱼等热门小型鲤科鱼",
+    "order": 1,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "subcat_asian_small",
+    "categoryId": "cat_cyprinid",
+    "name": "亚洲小型",
+    "slug": "asian-small",
+    "description": "白云金丝、三角灯等亚洲小型鱼",
+    "order": 2,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "subcat_livebearer_common",
+    "categoryId": "cat_livebearer",
+    "name": "胎生鱼",
+    "slug": "livebearer-common",
+    "description": "玛丽鱼、剑尾鱼、月光鱼等卵胎生鱼",
+    "order": 1,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "subcat_guppy",
+    "categoryId": "cat_livebearer",
+    "name": "孔雀品系",
+    "slug": "guppy",
+    "description": "孔雀鱼各类品系",
+    "order": 2,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "subcat_dwarf_cichlid",
+    "categoryId": "cat_sa_cichlid",
+    "name": "短鲷",
+    "slug": "dwarf-cichlid",
+    "description": "阿卡西、荷兰凤凰等南美短鲷",
+    "order": 1,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "subcat_angel_discus",
+    "categoryId": "cat_sa_cichlid",
+    "name": "神仙/七彩",
+    "slug": "angel-discus",
+    "description": "神仙鱼和七彩神仙",
+    "order": 2,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "subcat_sa_large",
+    "categoryId": "cat_sa_cichlid",
+    "name": "大型",
+    "slug": "sa-large",
+    "description": "地图鱼、罗汉鱼等大型南美慈鲷",
+    "order": 3,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "subcat_peacock",
+    "categoryId": "cat_african_cichlid",
+    "name": "孔雀",
+    "slug": "peacock",
+    "description": "马拉维湖孔雀类慈鲷",
+    "order": 1,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "subcat_mbuna",
+    "categoryId": "cat_african_cichlid",
+    "name": "马鲷",
+    "slug": "mbuna",
+    "description": "马拉维湖岩栖类慈鲷",
+    "order": 2,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "subcat_tanganyika",
+    "categoryId": "cat_african_cichlid",
+    "name": "坦鲷",
+    "slug": "tanganyika",
+    "description": "坦噶尼喀湖慈鲷",
+    "order": 3,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "subcat_corydoras",
+    "categoryId": "cat_catfish",
+    "name": "鼠鱼",
+    "slug": "corydoras",
+    "description": "各类鼠鱼，底栖清洁",
+    "order": 1,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "subcat_pleco",
+    "categoryId": "cat_catfish",
+    "name": "异型",
+    "slug": "pleco",
+    "description": "异型鱼和清道夫",
+    "order": 2,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "subcat_algae_eater",
+    "categoryId": "cat_utility",
+    "name": "除藻",
+    "slug": "algae-eater",
+    "description": "除藻鱼类，如小精灵、黑线飞狐",
+    "order": 1,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "subcat_shrimp",
+    "categoryId": "cat_utility",
+    "name": "观赏虾",
+    "slug": "shrimp",
+    "description": "各类观赏虾，包括水晶虾、樱花虾等",
+    "order": 2,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "subcat_snail",
+    "categoryId": "cat_utility",
+    "name": "螺类",
+    "slug": "snail",
+    "description": "观赏螺类，包括神秘螺、苹果螺等",
+    "order": 3,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "subcat_apex",
+    "categoryId": "cat_monster",
+    "name": "霸主",
+    "slug": "apex",
+    "description": "龙鱼、恐龙鱼等大型霸主鱼",
+    "order": 1,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "subcat_oddball",
+    "categoryId": "cat_monster",
+    "name": "怪兽",
+    "slug": "oddball",
+    "description": "外形奇特的大型观赏鱼",
+    "order": 2,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "subcat_marine_common",
+    "categoryId": "cat_saltwater",
+    "name": "常见",
+    "slug": "marine-common",
+    "description": "小丑鱼、雀鲷等常见海水鱼",
+    "order": 1,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "subcat_marine_angel",
+    "categoryId": "cat_saltwater",
+    "name": "神仙/倒吊",
+    "slug": "marine-angel",
+    "description": "海水神仙鱼和倒吊类",
+    "order": 2,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  }
+]

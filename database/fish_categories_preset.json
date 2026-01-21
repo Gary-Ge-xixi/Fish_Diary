@@ -1,0 +1,90 @@
+[
+  {
+    "_id": "cat_coldwater",
+    "name": "冷水/国粹",
+    "slug": "coldwater",
+    "description": "金鱼、锦鲤等冷水观赏鱼和中国原生鱼类",
+    "order": 1,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "cat_labyrinth",
+    "name": "迷鳃/斗鱼",
+    "slug": "labyrinth",
+    "description": "具有迷鳃器官可直接呼吸空气的鱼类，包括斗鱼、丝足鲈等",
+    "order": 2,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "cat_characin",
+    "name": "灯科/加拉辛",
+    "slug": "characin",
+    "description": "南美灯鱼和加拉辛科鱼类，多为小型群游鱼",
+    "order": 3,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "cat_cyprinid",
+    "name": "鲤科/小型",
+    "slug": "cyprinid",
+    "description": "鲤科小型观赏鱼，包括斑马鱼、虎皮鱼等",
+    "order": 4,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "cat_livebearer",
+    "name": "孔雀/卵胎生",
+    "slug": "livebearer",
+    "description": "卵胎生鱼类，直接生产小鱼，包括孔雀鱼、玛丽鱼等",
+    "order": 5,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "cat_sa_cichlid",
+    "name": "南美慈鲷",
+    "slug": "sa-cichlid",
+    "description": "来自南美洲的慈鲷科鱼类，包括短鲷、神仙鱼、七彩神仙等",
+    "order": 6,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "cat_african_cichlid",
+    "name": "三湖慈鲷",
+    "slug": "african-cichlid",
+    "description": "非洲三大湖慈鲷，色彩艳丽，领地意识强",
+    "order": 7,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "cat_catfish",
+    "name": "鼠鱼/异型",
+    "slug": "catfish",
+    "description": "底栖清洁鱼类，包括鼠鱼和异型鱼",
+    "order": 8,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "cat_utility",
+    "name": "工具鱼",
+    "slug": "utility",
+    "description": "具有清洁功能的生物，包括除藻鱼、观赏虾、螺类",
+    "order": 9,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "cat_monster",
+    "name": "大型/古代",
+    "slug": "monster",
+    "description": "大型观赏鱼和古代鱼类，包括龙鱼、恐龙鱼等",
+    "order": 10,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "cat_saltwater",
+    "name": "海水",
+    "slug": "saltwater",
+    "description": "海水观赏鱼，需要专业海水缸设备",
+    "order": 11,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  }
+]

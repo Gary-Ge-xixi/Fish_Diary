@@ -1,0 +1,13 @@
+{
+  "envId": "cloudbase-9gnb2cyn0387e399",
+  "functionRoot": ".",
+  "functions": [
+    {
+      "name": "fish-import",
+      "timeout": 60,
+      "runtime": "Nodejs16.13",
+      "memorySize": 256,
+      "handler": "index.main"
+    }
+  ]
+}

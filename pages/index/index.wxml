@@ -1,0 +1,909 @@
+<!--index.wxml - shadcn/ui 极简风格-->
+<view class="page-container">
+  <view class="nav-wrapper" style="height: 91px; overflow: hidden; background: #fff;">
+    <navigation-bar back="{{false}}" color="black" background="#fff">
+      <view slot="left" style="padding-left: 12px; font-weight: 600; font-size: 18px; display: flex; align-items: center; height: 100%; white-space: nowrap;">
+        Fish Diary
+      </view>
+    </navigation-bar>
+  </view>
+
+  <scroll-view class="page-scroll" scroll-y type="list" enhanced show-scrollbar="{{false}}">
+    <!-- 加载状态 - 骨架屏 -->
+    <block wx:if="{{loading}}">
+      <!-- 鱼缸选择器骨架屏 -->
+      <view class="section">
+        <view class="section-header">
+          <text class="section-title">我的鱼缸</text>
+        </view>
+        <scroll-view scroll-x class="tank-scroll" enhanced show-scrollbar="{{false}}">
+          <view class="skeleton-tank-list">
+            <view class="skeleton-tank-item" wx:for="{{[1,2,3]}}" wx:key="*this">
+              <view class="skeleton-tank-cover"></view>
+              <view class="skeleton-tank-name"></view>
+            </view>
+          </view>
+        </scroll-view>
+      </view>
+
+      <!-- 统计卡片骨架屏 -->
+      <view class="section">
+        <view class="card">
+          <view class="card__header">
+            <view class="skeleton-line short"></view>
+          </view>
+          <view class="card__body">
+            <view class="skeleton-stats-grid">
+              <view class="skeleton-stat-item" wx:for="{{[1,2,3,4]}}" wx:key="*this">
+                <view class="skeleton-stat-value"></view>
+                <view class="skeleton-stat-label"></view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 记录列表骨架屏 -->
+      <view class="section">
+        <view class="section-header">
+          <text class="section-title">管理</text>
+        </view>
+        <view class="skeleton-list" style="margin-top: var(--spacing-md);">
+          <view class="skeleton-card" wx:for="{{[1,2,3]}}" wx:key="*this">
+            <view class="skeleton-avatar"></view>
+            <view class="skeleton-content">
+              <view class="skeleton-line short"></view>
+              <view class="skeleton-line medium"></view>
+              <view class="skeleton-line"></view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </block>
+
+    <!-- 空状态 -->
+    <block wx:elif="{{!loading && tanks.length === 0}}">
+      <view class="empty-container">
+        <view class="empty-state">
+          <text class="empty-state__icon">🐠</text>
+          <text class="empty-state__title">还没有鱼缸</text>
+          <text class="empty-state__desc">添加你的第一个鱼缸，开始记录养鱼生活</text>
+          <button class="btn btn--primary" bindtap="onAddTank">添加鱼缸</button>
+        </view>
+      </view>
+    </block>
+
+    <!-- 主内容 -->
+    <block wx:else>
+      <!-- 鱼缸选择器 -->
+      <view class="section">
+        <view class="section-header">
+          <text class="section-title">我的鱼缸</text>
+          <!-- 鱼类百科入口暂时隐藏 -->
+          <!-- <view class="flex items-center gap-sm" bindtap="onOpenWiki">
+             <text class="text-sm" style="color: #3b82f6;">📘 鱼类百科</text>
+          </view> -->
+        </view>
+
+        <scroll-view scroll-x class="tank-scroll" enhanced show-scrollbar="{{false}}">
+          <view class="tank-list">
+            <view
+              wx:for="{{tanks}}"
+              wx:key="_id"
+              class="tank-item {{currentTankIndex === index ? 'tank-item--active' : ''}}"
+              data-index="{{index}}"
+              bindtap="onTankSelect"
+            >
+              <image
+                class="tank-item__cover"
+                src="{{item.coverUrl || '/assets/images/default-tank.png'}}"
+                mode="aspectFill"
+              ></image>
+              <text class="tank-item__name">{{item.name}}</text>
+            </view>
+
+            <view wx:if="{{tanks.length < 10}}" class="tank-item tank-item--add" bindtap="onAddTank">
+              <view class="tank-item__add-icon">+</view>
+              <text class="tank-item__name text-muted">添加</text>
+            </view>
+          </view>
+        </scroll-view>
+      </view>
+
+      <!-- 统计卡片 -->
+      <view class="section" wx:if="{{currentTank}}">
+        <view class="card" bindtap="onTankDetail">
+          <view class="card__header">
+            <view class="flex items-center justify-between">
+              <text class="card__title">{{currentTank.name}}</text>
+              <view class="flex items-center gap-sm">
+                <text class="text-muted">查看详情</text>
+                <image class="arrow-icon" src="/assets/icons/chevron-right.svg" mode="aspectFit" />
+              </view>
+            </view>
+          </view>
+          <view class="card__body">
+            <view wx:if="{{tankStats}}" class="stats-grid">
+              <view class="stat-item">
+                <text class="stat-value {{tankStats.fish.survivalRate >= 80 ? 'text-success' : tankStats.fish.survivalRate >= 50 ? 'text-warning' : 'text-danger'}}">{{tankStats.fish.survivalRate || 0}}%</text>
+                <text class="stat-label">存活率</text>
+              </view>
+              <view class="stat-item">
+                <text class="stat-value">{{tankStats.fish.aliveSpeciesCount || 0}}</text>
+                <text class="stat-label">鱼种</text>
+              </view>
+              <view class="stat-item">
+                <text class="stat-value">¥{{tankStats.totalInvestment || 0}}</text>
+                <text class="stat-label">总投资</text>
+              </view>
+              <view class="stat-item">
+                <text class="stat-value text-danger">¥{{tankStats.fish.deadTotalPrice || 0}}</text>
+                <text class="stat-label">损失</text>
+              </view>
+            </view>
+            <view wx:else class="stats-loading">
+              <text class="text-muted text-sm">加载统计数据...</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 功能区域 -->
+      <view class="section">
+        <view class="section-header">
+          <text class="section-title">管理</text>
+        </view>
+
+        <view class="tabs">
+          <view
+            wx:for="{{tabs}}"
+            wx:key="key"
+            class="tab-item {{activeTab === item.key ? 'tab-item--active' : ''}}"
+            data-key="{{item.key}}"
+            bindtap="onTabChange"
+          >
+            <text>{{item.name}}</text>
+          </view>
+        </view>
+
+        <view class="tab-content">
+          <view wx:if="{{activeTab === 'records'}}" class="tab-panel">
+             <!-- 日期筛选 -->
+             <view class="record-filter">
+                <view class="filter-row">
+                   <picker mode="date" value="{{recordFilterDate}}" end="{{today}}" bindchange="onRecordFilterDateChange">
+                      <view class="date-picker-trigger">
+                         <text class="date-text">{{recordFilterDate === today ? '今日' : recordFilterDate}}</text>
+                         <text class="date-icon">▼</text>
+                      </view>
+                   </picker>
+                   <view class="filter-clear" wx:if="{{recordFilterDate && recordFilterDate !== today}}" bindtap="onClearRecordFilter">
+                      <text>返回今日</text>
+                   </view>
+                </view>
+             </view>
+
+             <!-- 记录列表 - 统一样式 -->
+             <view class="record-list-unified" wx:if="{{recordList.length > 0}}">
+                <view class="record-card" wx:for="{{recordList}}" wx:key="_id">
+                   <!-- 头像/图标区域 -->
+                   <view class="record-avatar" style="background: {{item.type === 'feeding' ? '#fef3c7' : item.type === 'water-change' ? '#cffafe' : '#dbeafe'}};">
+                      <text wx:if="{{item.type === 'feeding'}}">🍖</text>
+                      <text wx:elif="{{item.type === 'water-change'}}">💧</text>
+                      <text wx:else>🧪</text>
+                   </view>
+
+                   <!-- 内容区域 -->
+                   <view class="record-info">
+                      <!-- 标题行 -->
+                      <view class="record-info-header">
+                         <text class="record-name">{{item.type === 'feeding' ? '喂养记录' : item.type === 'water-change' ? '换水记录' : '水质记录'}}</text>
+                         <image class="arrow-icon" src="/assets/icons/chevron-right.svg" mode="aspectFit" />
+                      </view>
+
+                      <!-- 喂养详情 -->
+                      <block wx:if="{{item.type === 'feeding'}}">
+                         <view class="record-meta">
+                            <view class="meta-row">
+                               <text class="meta-label">食物</text>
+                               <text class="meta-value">{{item.foodTypeName}}</text>
+                               <view class="meta-divider" wx:if="{{item.foodName}}"></view>
+                               <text class="meta-value" wx:if="{{item.foodName}}">{{item.foodName}}</text>
+                            </view>
+                            <text class="record-time">{{item.date}} {{item.time}}</text>
+                         </view>
+                      </block>
+
+                      <!-- 换水详情 -->
+                      <block wx:elif="{{item.type === 'water-change'}}">
+                         <view class="record-meta">
+                            <view class="meta-row">
+                               <text class="meta-label">换水量</text>
+                               <text class="meta-value" style="color: #0891b2; font-weight: 600;">{{item.percent}}%</text>
+                            </view>
+                            <text class="record-time">{{item.date}}</text>
+                         </view>
+                      </block>
+
+                      <!-- 水质详情 - 横向滚动 -->
+                      <block wx:elif="{{item.type === 'water-quality'}}">
+                         <scroll-view scroll-x class="quality-data-scroll" enhanced show-scrollbar="{{false}}">
+                            <view class="quality-data-row">
+                               <view class="quality-tag" wx:if="{{item.ph}}">
+                                  <text class="quality-tag-label">pH</text>
+                                  <text class="quality-tag-value">{{item.ph}}</text>
+                               </view>
+                               <view class="quality-tag" wx:if="{{item.temperature}}">
+                                  <text class="quality-tag-label">温度</text>
+                                  <text class="quality-tag-value">{{item.temperature}}°C</text>
+                               </view>
+                               <view class="quality-tag" wx:if="{{item.ammonia !== undefined && item.ammonia !== null}}">
+                                  <text class="quality-tag-label">氨氮</text>
+                                  <text class="quality-tag-value {{item.ammonia > 0 ? 'text-danger' : ''}}">{{item.ammonia}}</text>
+                               </view>
+                               <view class="quality-tag" wx:if="{{item.nitrite !== undefined && item.nitrite !== null}}">
+                                  <text class="quality-tag-label">NO2</text>
+                                  <text class="quality-tag-value {{item.nitrite > 0 ? 'text-danger' : ''}}">{{item.nitrite}}</text>
+                               </view>
+                               <view class="quality-tag" wx:if="{{item.nitrate !== undefined && item.nitrate !== null}}">
+                                  <text class="quality-tag-label">NO3</text>
+                                  <text class="quality-tag-value {{item.nitrate > 40 ? 'text-warning' : ''}}">{{item.nitrate}}</text>
+                               </view>
+                            </view>
+                         </scroll-view>
+                         <text class="record-time">{{item.date}} {{item.time}}</text>
+                      </block>
+                   </view>
+                </view>
+             </view>
+
+             <view class="empty-panel" wx:elif="{{!loading}}">
+                <text class="text-muted">暂无记录</text>
+             </view>
+
+             <!-- 悬浮添加按钮：仅今日显示 -->
+             <view wx:if="{{tanks.length > 0 && recordFilterDate === today}}" class="add-feeding-btn floating-add-btn" bindtap="onAddRecord">
+                  <text class="add-icon">+</text>
+                  <text>记录</text>
+             </view>
+          </view>
+          <view wx:elif="{{activeTab === 'fish'}}" class="tab-panel">
+            <view class="fish-list" wx:if="{{fishList.length > 0}}">
+              <!-- 鱼类列表（API 已按 tankId 过滤） -->
+              <view class="fish-item" wx:for="{{fishList}}" wx:key="_id" bindtap="onFishClick" data-id="{{item._id}}">
+                  <view class="fish-avatar">
+                     <image wx:if="{{item.imageUrl}}" src="{{item.imageUrl}}" mode="aspectFill" class="fish-avatar-image"></image>
+                     <text wx:else style="font-size: 44rpx;">🐟</text>
+                  </view>
+                  <view class="fish-info">
+                    <view class="fish-header">
+                      <text class="fish-name">{{item.customName}}</text>
+                      <image class="arrow-icon" src="/assets/icons/chevron-right.svg" mode="aspectFit" />
+                    </view>
+                    <view class="fish-meta">
+                      <view class="meta-row">
+                        <text class="meta-label">数量</text>
+                        <text class="meta-value">{{item.quantity}}</text>
+                        <view class="meta-divider"></view>
+                        <text class="meta-label">总价</text>
+                        <text class="meta-value price">¥{{item.totalPriceDisplay}}</text>
+                      </view>
+                      <text class="fish-date">{{item.purchaseDateDisplay}}</text>
+                    </view>
+                  </view>
+                </view>
+            </view>
+            <view class="empty-panel" wx:else>
+              <text class="text-muted">暂无鱼类数据</text>
+            </view>
+            <view wx:if="{{tanks.length > 0}}" class="add-feeding-btn floating-add-btn" bindtap="onAddFish">
+                  <text class="add-icon">+</text>
+                  <text>添加鱼类</text>
+              </view>
+          </view>
+
+
+
+          <view wx:elif="{{activeTab === 'equipment'}}" class="tab-panel">
+            <view class="equipment-list" wx:if="{{equipmentList.length > 0}}">
+               <view class="equipment-card" wx:for="{{equipmentList}}" wx:key="_id">
+                  <view class="eq-header">
+                     <view class="eq-type-badge">{{item.typeName}}</view>
+                     <text class="eq-price">¥{{item.price}}</text>
+                  </view>
+                  <view class="eq-body">
+                     <text class="eq-name">{{item.name}}</text>
+                     <text class="eq-meta">{{item.brand}} {{item.model}}</text>
+                  </view>
+               </view>
+            </view>
+            <view class="empty-panel" wx:elif="{{!equipmentLoading}}">
+              <text class="text-muted">暂无设备数据</text>
+            </view>
+
+             <view wx:if="{{tanks.length > 0}}" class="add-feeding-btn floating-add-btn" bindtap="onAddEquipment">
+                  <text class="add-icon">+</text>
+                  <text>添加设备</text>
+              </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="safe-area-bottom"></view>
+    </block>
+  </scroll-view>
+</view>
+
+<!-- ========== 弹窗区域（在 page-container 外部，可正确覆盖 tabbar） ========== -->
+
+<!-- ========== 添加喂食弹窗 ========== -->
+  <view wx:if="{{showFeedingPopup}}" class="popup-mask" bindtap="onCloseFeedingPopup">
+    <view class="popup popup--bottom" catchtap="stopPropagation">
+      <view class="popup__header">
+        <text class="popup__close" bindtap="onCloseFeedingPopup">×</text>
+        <text class="popup__title">添加喂食记录</text>
+        <view class="popup__placeholder"></view>
+      </view>
+
+      <scroll-view class="popup__body" scroll-y enhanced show-scrollbar="{{false}}">
+        <view class="form-wrapper">
+          <!-- 时间选择 -->
+          <view class="form-item">
+            <text class="form-label">喂食时间</text>
+            <picker mode="time" value="{{feedingForm.time}}" bindchange="onFeedingTimeChange">
+              <view class="input-picker">
+                <text>{{feedingForm.time}}</text>
+                <text class="text-muted">></text>
+              </view>
+            </picker>
+          </view>
+
+          <!-- 食物类型 -->
+          <view class="form-item">
+            <text class="form-label">食物类型</text>
+            <view class="chip-group">
+              <view 
+                wx:for="{{foodTypeOptions}}" 
+                wx:key="key"
+                class="chip {{feedingForm.foodType === item.key ? 'chip--active' : ''}}"
+                data-type="{{item.key}}"
+                bindtap="onSelectFoodType"
+              >
+                {{item.label}}
+              </view>
+            </view>
+          </view>
+          
+          <!-- 图片上传 -->
+          <view class="form-item">
+            <text class="form-label">拍照记录 (选填)</text>
+            <view class="image-picker" bindtap="onChooseFeedingImage">
+              <image wx:if="{{feedingForm.imageUrl}}" src="{{feedingForm.imageUrl}}" mode="aspectFill" class="image-picker__preview"></image>
+              <view wx:else class="image-picker__placeholder">
+                <text class="image-picker__icon">+</text>
+              </view>
+            </view>
+          </view>
+
+          <!-- 其他食物名称输入 -->
+          <view class="form-item" wx:if="{{feedingForm.foodType === 'other'}}">
+            <text class="form-label">食物名称 <text class="required">*</text></text>
+            <input class="input" placeholder="请输入食物名称" value="{{feedingForm.customFood}}" bindinput="onCustomFoodInput"></input>
+          </view>
+          
+           <!-- 品牌/备注 -->
+          <view class="form-item" wx:else>
+            <text class="form-label">品牌/备注 (选填)</text>
+            <input class="input" placeholder="例如：德彩、海丰" value="{{feedingForm.foodName}}" bindinput="onFoodNameInput"></input>
+          </view>
+
+        </view>
+      </scroll-view>
+
+      <view class="popup__footer">
+        <button class="btn btn--primary btn--block" bindtap="onSaveFeeding" loading="{{saving}}">保存记录</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- ========== 添加鱼缸弹窗 ========== -->
+  <page-container 
+    show="{{showAddTankPopup}}" 
+    round 
+    position="bottom" 
+    custom-style="background-color: var(--background);"
+    bind:afterleave="onCloseAddTank"
+  >
+    <view class="popup-content">
+      <!-- 头部 -->
+      <view class="popup__header">
+        <text class="popup__close" bindtap="onCloseAddTank">×</text>
+        <text class="popup__title">添加鱼缸</text>
+        <view class="popup__placeholder"></view>
+      </view>
+
+      <!-- 表单内容 -->
+      <scroll-view class="popup__body" scroll-y enhanced show-scrollbar="{{false}}" style="max-height: 70vh;">
+        <view class="form-wrapper">
+          <!-- 图片选择 -->
+          <view class="form-item">
+            <text class="form-label">鱼缸图片 <text class="required">*</text></text>
+            <text wx:if="{{errors.coverUrl}}" class="form-error">请选择图片</text>
+            <view class="image-picker" bindtap="onChooseTankImage">
+              <image wx:if="{{tankForm.coverUrl}}" src="{{tankForm.coverUrl}}" mode="aspectFill" class="image-picker__preview"></image>
+              <view wx:else class="image-picker__placeholder">
+                <text class="image-picker__icon">+</text>
+                <text class="image-picker__text">拍照/相册</text>
+              </view>
+            </view>
+          </view>
+
+          <!-- 鱼缸名称 -->
+          <view class="form-item">
+            <text class="form-label">鱼缸名称 <text class="required">*</text></text>
+            <text wx:if="{{errors.name}}" class="form-error">请填写鱼缸名称</text>
+            <input class="input" placeholder="请输入名称（20字以内）" maxlength="20" value="{{tankForm.name}}" bindinput="onTankNameInput"></input>
+          </view>
+
+          <!-- 鱼缸尺寸 -->
+          <view class="form-item">
+            <text class="form-label">鱼缸尺寸 <text class="required">*</text></text>
+            <text wx:if="{{errors.sizeKey}}" class="form-error">请选择鱼缸尺寸</text>
+            <view class="size-options">
+              <view
+                wx:for="{{tankSizeOptions}}"
+                wx:key="key"
+                class="size-option {{tankForm.sizeKey === item.key ? 'size-option--active' : ''}}"
+                data-key="{{item.key}}"
+                bindtap="onSelectTankSize"
+              >
+                <text class="size-option__label">{{item.label}}</text>
+                <text class="size-option__desc">{{item.desc}}</text>
+              </view>
+            </view>
+          </view>
+          
+          <!-- 鱼缸价格 -->
+          <view class="form-item">
+            <text class="form-label">购买价格 (¥)</text>
+            <input class="input" type="digit" placeholder="0.00" value="{{tankForm.price}}" bindinput="onTankPriceInput"></input>
+          </view>
+
+        </view>
+      </scroll-view>
+
+      <!-- 底部按钮 -->
+      <view class="popup__footer">
+        <button class="btn btn--primary btn--block" bindtap="onSaveTank" loading="{{saving}}">保存</button>
+      </view>
+    </view>
+  </page-container>
+
+  <!-- 添加鱼类弹窗 -->
+  <view wx:if="{{showFishPopup}}" class="popup-mask" bindtap="onCloseFishPopup">
+    <view class="popup popup--bottom" catchtap="stopPropagation">
+      <view class="popup__header">
+        <text class="popup__close" bindtap="onCloseFishPopup">×</text>
+        <text class="popup__title">添加鱼类</text>
+        <view class="popup__placeholder"></view>
+      </view>
+
+      <scroll-view class="popup__body" scroll-y enhanced show-scrollbar="{{false}}">
+        <view class="form-wrapper">
+          <!-- 当前鱼缸信息 -->
+          <!-- 当前鱼缸信息 -->
+          <view class="form-item" wx:if="{{currentTank}}">
+            <text class="form-label" style="margin-bottom: 12rpx;">添加位置</text>
+            <view class="tank-hint-text">
+               正在添加到: <text class="font-bold text-primary">{{currentTank.name}}</text>
+            </view>
+          </view>
+
+          <!-- 鱼种类选择 -->
+          <view class="form-item">
+            <text class="form-label">鱼品种 <text class="required">*</text></text>
+            <picker 
+                mode="multiSelector" 
+                range="{{fishCategoryRange}}" 
+                range-key="name" 
+                value="{{fishCategoryIndex}}" 
+                bindchange="onFishCategoryChange"
+                bindcolumnchange="onFishCategoryColumnChange"
+            >
+              <view class="input-picker {{!fishForm.speciesId ? 'text-muted' : ''}}">
+                <text>{{fishForm.speciesName || '点击选择分类'}}</text>
+                <text class="text-muted">></text>
+              </view>
+            </picker>
+          </view>
+
+          <!-- 价格 -->
+          <view class="form-item">
+            <text class="form-label">单价 (¥) <text class="required">*</text></text>
+            <input class="input" type="digit" placeholder="0.00" value="{{fishForm.price}}" bindinput="onFishPriceInput"></input>
+          </view>
+          
+          <!-- 数量 -->
+          <view class="form-item">
+            <text class="form-label">数量 (条) <text class="required">*</text></text>
+            <input class="input" type="number" placeholder="1" value="{{fishForm.count}}" maxlength="3" bindinput="onFishCountInput"></input>
+          </view>
+
+        </view>
+      </scroll-view>
+
+      <view class="popup__footer">
+        <button class="btn btn--primary btn--block" bindtap="onSaveFish" loading="{{saving}}">保存记录</button>
+      </view>
+    </view>
+  </view>
+  <!-- 编辑鱼类弹窗 -->
+  <view wx:if="{{showFishEditPopup}}" class="popup-mask" bindtap="onCloseFishEditPopup">
+    <view class="popup popup--bottom" catchtap="stopPropagation">
+      <view class="popup__header">
+        <text class="popup__close" bindtap="onCloseFishEditPopup">×</text>
+        <text class="popup__title">管理鱼类</text>
+        <view class="popup__placeholder"></view>
+      </view>
+
+      <scroll-view class="popup__body" scroll-y enhanced show-scrollbar="{{false}}">
+        <view class="form-wrapper">
+          <!-- 头部信息 -->
+          <view class="fish-edit-header">
+             <view class="fish-avatar large">🐟</view>
+             <view class="fish-edit-info">
+               <text class="fish-name large">{{editFishForm.name}}</text>
+               <text class="text-muted text-sm">所属: {{editFishForm.tankName || currentTank.name}}</text>
+             </view>
+          </view>
+
+          <!-- 状态概览 -->
+          <view class="form-section">
+            <text class="section-title">状态统计</text>
+            <view class="stats-grid" style="margin: 0 -24rpx;">
+               <view class="stat-item">
+                 <text class="stat-value text-success">{{editFishForm.currentAlive}}</text>
+                 <text class="stat-label">当前存活</text>
+               </view>
+               <view class="stat-item">
+                 <text class="stat-value">{{editFishForm.baseQuantity}}</text>
+                 <text class="stat-label">初始数量</text>
+               </view>
+            </view>
+          </view>
+
+          <!-- 记录死亡 -->
+          <view class="form-item">
+             <text class="form-label">新增死亡 (条)</text>
+             <input class="input" type="number" placeholder="0" value="{{editFishForm.deadCount}}" bindinput="onFishDeadInput"></input>
+             <text class="text-muted text-xs mt-xs">输入本次发现的死亡数量，将自动扣减存活数</text>
+          </view>
+
+
+          <!-- 移动鱼类 -->
+          <view class="form-item pt-md dashed-border-top">
+             <view class="flex items-center justify-between mb-sm">
+                <text class="form-label mb-0">所在鱼缸</text>
+             </view>
+             <picker mode="selector" range="{{tanks}}" range-key="name" value="{{targetTankIndex}}" bindchange="onTransferTankChange">
+                 <view class="input-picker">
+                    <text>{{tanks[targetTankIndex].name}}</text>
+                    <text class="text-muted">></text>
+                 </view>
+             </picker>
+             <text class="text-muted text-xs mt-xs" wx:if="{{tanks[targetTankIndex]._id !== editFishForm.tankId}}">
+                 保存后将移动至该鱼缸
+             </text>
+          </view>
+        </view>
+      </scroll-view>
+
+      <view class="popup__footer" style="display: flex; gap: 24rpx;">
+        <button class="btn btn--outline" bindtap="onDeleteFish" style="flex: 1; border-color: #333; color: #333;">删除</button>
+        <button class="btn btn--primary" bindtap="onSaveEditFish" loading="{{saving}}" style="flex: 1;">保存</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 换水记录弹窗 -->
+  <view wx:if="{{showWaterChangePopup}}" class="popup-mask" bindtap="onCloseWaterChangePopup">
+    <view class="popup popup--bottom" catchtap="stopPropagation">
+      <view class="popup__header">
+        <text class="popup__close" bindtap="onCloseWaterChangePopup">×</text>
+        <text class="popup__title">记录换水</text>
+        <view class="popup__placeholder"></view>
+      </view>
+
+      <view class="popup__body">
+        <view class="form-wrapper">
+          <!-- 日期 -->
+          <view class="form-item">
+            <text class="form-label">日期</text>
+            <picker mode="date" value="{{waterChangeForm.date}}" bindchange="onWaterChangeDateChange">
+              <view class="input-picker">
+                <text>{{waterChangeForm.date}}</text>
+                <text class="text-muted">></text>
+              </view>
+            </picker>
+          </view>
+
+          <!-- 换水比例 -->
+          <view class="form-item">
+             <view class="water-percent-row mb-sm">
+                <text class="form-label mb-0">换水量</text>
+                <text class="water-percent-value text-primary font-bold">{{waterChangeForm.percent}}%</text>
+             </view>
+             <slider
+                min="0"
+                max="100"
+                step="5"
+                value="{{waterChangeForm.percent}}"
+                activeColor="#3b82f6"
+                block-size="24"
+                bindchanging="onWaterChangePercentChange"
+                bindchange="onWaterChangePercentChange"
+             />
+             <view class="flex justify-between text-xs text-muted mt-xs">
+               <text>少量</text>
+               <text>大量</text>
+             </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="popup__footer">
+        <button class="btn btn--primary btn--block" bindtap="onSaveWaterChange" loading="{{saving}}">保存</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 设备管理弹窗 -->
+  <view wx:if="{{showEquipmentPopup}}" class="popup-mask" bindtap="onCloseEquipmentPopup">
+    <view class="popup popup--bottom" catchtap="stopPropagation">
+      <view class="popup__header">
+        <text class="popup__close" bindtap="onCloseEquipmentPopup">×</text>
+        <text class="popup__title">添加设备</text>
+        <view class="popup__placeholder"></view>
+      </view>
+
+      <scroll-view class="popup__body" scroll-y enhanced show-scrollbar="{{false}}" style="max-height: 70vh;">
+        <view class="form-wrapper">
+          <!-- 类型选择 -->
+          <view class="form-item">
+            <text class="form-label">设备类型</text>
+            <picker range="{{equipmentTypes}}" range-key="label" bindchange="onEquipmentTypeChange">
+               <view class="input-picker">
+                  <text>{{equipmentForm.typeLabel || '请选择'}}</text>
+                  <text class="text-muted">></text>
+               </view>
+            </picker>
+          </view>
+
+          <!-- 名称 -->
+          <view class="form-item">
+            <text class="form-label">设备名称 <text class="required">*</text></text>
+            <input class="input" placeholder="例如：伊罕加热棒" value="{{equipmentForm.name}}" data-field="name" bindinput="onEquipmentInput"></input>
+          </view>
+
+          <!-- 品牌 -->
+          <view class="form-item">
+            <text class="form-label">品牌</text>
+            <input class="input" placeholder="例如：EHEIM" value="{{equipmentForm.brand}}" data-field="brand" bindinput="onEquipmentInput"></input>
+          </view>
+
+          <!-- 型号 -->
+          <view class="form-item">
+            <text class="form-label">型号</text>
+            <input class="input" placeholder="例如：300W" value="{{equipmentForm.model}}" data-field="model" bindinput="onEquipmentInput"></input>
+          </view>
+
+          <!-- 价格 -->
+          <view class="form-item">
+            <text class="form-label">价格 (¥)</text>
+            <input class="input" type="digit" placeholder="0.00" value="{{equipmentForm.price}}" data-field="price" bindinput="onEquipmentInput"></input>
+          </view>
+        </view>
+      </scroll-view>
+
+      <view class="popup__footer">
+        <button class="btn btn--primary btn--block" bindtap="onSaveEquipment" loading="{{saving}}">保存</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 水质记录弹窗 -->
+  <view wx:if="{{showWaterQualityPopup}}" class="popup-mask" bindtap="onCloseWaterQualityPopup">
+    <view class="popup popup--bottom" catchtap="stopPropagation">
+      <view class="popup__header">
+        <text class="popup__close" bindtap="onCloseWaterQualityPopup">×</text>
+        <text class="popup__title">记录水质</text>
+        <view class="popup__placeholder"></view>
+      </view>
+
+      <scroll-view class="popup__body" scroll-y enhanced show-scrollbar="{{false}}" style="max-height: 70vh;">
+        <view class="form-wrapper">
+          <!-- 日期 -->
+          <view class="form-item">
+            <text class="form-label">日期</text>
+            <picker mode="date" value="{{waterQualityForm.date}}" bindchange="onWaterQualityDateChange">
+              <view class="input-picker">
+                <text>{{waterQualityForm.date}}</text>
+                <text class="text-muted">></text>
+              </view>
+            </picker>
+          </view>
+
+          <view class="flex gap-md">
+             <view class="form-item flex-1">
+                <text class="form-label">pH值</text>
+                <input class="input" type="digit" placeholder="7.0" value="{{waterQualityForm.ph}}" data-field="ph" bindinput="onWaterQualityInput"></input>
+             </view>
+             <view class="form-item flex-1">
+                <text class="form-label">温度 (°C)</text>
+                <input class="input" type="digit" placeholder="26.0" value="{{waterQualityForm.temperature}}" data-field="temperature" bindinput="onWaterQualityInput"></input>
+             </view>
+          </view>
+
+          <view class="flex gap-md">
+             <view class="form-item flex-1">
+                <text class="form-label">氨氮 (mg/L)</text>
+                <input class="input" type="digit" placeholder="0" value="{{waterQualityForm.ammonia}}" data-field="ammonia" bindinput="onWaterQualityInput"></input>
+             </view>
+             <view class="form-item flex-1">
+                <text class="form-label">NO2 (mg/L)</text>
+                <input class="input" type="digit" placeholder="0" value="{{waterQualityForm.nitrite}}" data-field="nitrite" bindinput="onWaterQualityInput"></input>
+             </view>
+          </view>
+
+          <view class="form-item">
+            <text class="form-label">NO3 (mg/L)</text>
+            <input class="input" type="digit" placeholder="10" value="{{waterQualityForm.nitrate}}" data-field="nitrate" bindinput="onWaterQualityInput"></input>
+          </view>
+
+          <!-- 图片上传 -->
+          <view class="form-item">
+            <text class="form-label">试纸拍照 (选填)</text>
+            <view class="image-picker" bindtap="onChooseQualityImage">
+              <image wx:if="{{waterQualityForm.imageUrl}}" src="{{waterQualityForm.imageUrl}}" mode="aspectFill" class="image-picker__preview"></image>
+              <view wx:else class="image-picker__placeholder">
+                <text class="image-picker__icon">+</text>
+              </view>
+            </view>
+          </view>
+
+        </view>
+      </scroll-view>
+
+      <view class="popup__footer">
+        <button class="btn btn--primary btn--block" bindtap="onSaveWaterQuality" loading="{{saving}}">保存</button>
+      </view>
+    </view>
+  </view>
+  <!-- 统一记录弹窗 -->
+  <view wx:if="{{showRecordPopup}}" class="popup-mask" bindtap="onCloseRecordPopup">
+    <view class="popup popup--bottom" catchtap="stopPropagation">
+      <view class="popup__header">
+        <text class="popup__close" bindtap="onCloseRecordPopup">×</text>
+        <text class="popup__title">添加记录</text>
+        <view class="popup__placeholder"></view>
+      </view>
+
+      <scroll-view class="popup__body" scroll-y enhanced show-scrollbar="{{false}}">
+        <view class="form-wrapper">
+           <!-- 记录类型选择 - 3个选项 -->
+           <view class="form-item">
+              <text class="form-label">记录类型</text>
+              <view class="tags-row">
+                 <view class="tag-option {{recordType === 'feeding' ? 'active' : ''}}" bindtap="onRecordTypeChange" data-type="feeding">喂养</view>
+                 <view class="tag-option {{recordType === 'water-change' ? 'active' : ''}}" bindtap="onRecordTypeChange" data-type="water-change">换水</view>
+                 <view class="tag-option {{recordType === 'water-quality' ? 'active' : ''}}" bindtap="onRecordTypeChange" data-type="water-quality">水质</view>
+              </view>
+           </view>
+
+           <!-- 喂养表单 -->
+           <block wx:if="{{recordType === 'feeding'}}">
+              <view class="form-item">
+                <text class="form-label">时间</text>
+                <picker mode="time" value="{{feedingForm.time}}" bindchange="onFeedingTimeSelect">
+                   <view class="input-picker">
+                      <text>{{feedingForm.time}}</text>
+                      <text class="text-muted">></text>
+                   </view>
+                </picker>
+              </view>
+              <view class="form-item">
+                 <text class="form-label">食物类型</text>
+                 <picker range="{{foodTypeOptions}}" range-key="label" bindchange="onFoodTypeChange">
+                    <view class="input-picker">
+                       <text>{{feedingForm.foodTypeLabel}}</text>
+                       <text class="text-muted">></text>
+                    </view>
+                 </picker>
+              </view>
+              <view class="form-item">
+                 <text class="form-label">食物名称 (选填)</text>
+                 <input class="input" placeholder="例如：丰年虾" value="{{feedingForm.foodName}}" data-field="foodName" bindinput="onFeedingInput"></input>
+              </view>
+              <view class="form-item">
+                 <text class="form-label">喂食量 (选填)</text>
+                 <input class="input" placeholder="适量" value="{{feedingForm.amount}}" data-field="amount" bindinput="onFeedingInput"></input>
+              </view>
+           </block>
+
+           <!-- 换水表单 -->
+           <block wx:if="{{recordType === 'water-change'}}">
+              <view class="form-item">
+                <text class="form-label">时间</text>
+                <picker mode="time" value="{{waterChangeForm.time}}" bindchange="onWaterChangeTimeChange">
+                  <view class="input-picker">
+                    <text>{{waterChangeForm.time}}</text>
+                    <text class="text-muted">></text>
+                  </view>
+                </picker>
+              </view>
+              <view class="form-item">
+                 <view class="water-percent-row mb-sm">
+                    <text class="form-label mb-0">换水量</text>
+                    <text class="water-percent-value text-primary font-bold">{{waterChangeForm.percent}}%</text>
+                 </view>
+                 <slider
+                    min="0"
+                    max="100"
+                    step="5"
+                    value="{{waterChangeForm.percent}}"
+                    activeColor="#3b82f6"
+                    block-size="24"
+                    bindchanging="onWaterChangePercentChanging"
+                    bindchange="onWaterChangePercentChange"
+                 />
+                 <view class="flex justify-between text-xs text-muted mt-xs">
+                   <text>少量</text>
+                   <text>大量</text>
+                 </view>
+              </view>
+           </block>
+
+           <!-- 水质表单 -->
+           <block wx:if="{{recordType === 'water-quality'}}">
+              <view class="form-item">
+                <text class="form-label">时间</text>
+                <picker mode="time" value="{{waterQualityForm.time}}" bindchange="onWaterQualityTimeChange">
+                  <view class="input-picker">
+                    <text>{{waterQualityForm.time}}</text>
+                    <text class="text-muted">></text>
+                  </view>
+                </picker>
+              </view>
+              <view class="flex gap-md">
+                 <view class="form-item flex-1">
+                    <text class="form-label">pH值</text>
+                    <input class="input" type="digit" placeholder="7.0" value="{{waterQualityForm.ph}}" data-field="ph" bindinput="onWaterQualityInput"></input>
+                 </view>
+                 <view class="form-item flex-1">
+                    <text class="form-label">温度 (°C)</text>
+                    <input class="input" type="digit" placeholder="26.0" value="{{waterQualityForm.temperature}}" data-field="temperature" bindinput="onWaterQualityInput"></input>
+                 </view>
+              </view>
+              <view class="flex gap-md">
+                 <view class="form-item flex-1">
+                    <text class="form-label">氨氮 (mg/L)</text>
+                    <input class="input" type="digit" placeholder="0" value="{{waterQualityForm.ammonia}}" data-field="ammonia" bindinput="onWaterQualityInput"></input>
+                 </view>
+                 <view class="form-item flex-1">
+                    <text class="form-label">NO2 (mg/L)</text>
+                    <input class="input" type="digit" placeholder="0" value="{{waterQualityForm.nitrite}}" data-field="nitrite" bindinput="onWaterQualityInput"></input>
+                 </view>
+              </view>
+              <view class="form-item">
+                <text class="form-label">NO3 (mg/L)</text>
+                <input class="input" type="digit" placeholder="10" value="{{waterQualityForm.nitrate}}" data-field="nitrate" bindinput="onWaterQualityInput"></input>
+              </view>
+           </block>
+        </view>
+      </scroll-view>
+
+      <view class="popup__footer">
+        <button class="btn btn--primary btn--block" bindtap="onSaveRecord" loading="{{saving}}">保存</button>
+      </view>
+    </view>
+  </view>

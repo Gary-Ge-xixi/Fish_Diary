@@ -1,0 +1,9 @@
+{
+  "name": "tank-manage",
+  "version": "1.0.0",
+  "description": "鱼缸管理云函数 (CRUD)",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

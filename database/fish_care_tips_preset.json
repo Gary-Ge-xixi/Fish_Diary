@@ -1,0 +1,282 @@
+[
+  {
+    "_id": "tip_goldfish_feeding",
+    "speciesId": "species_goldfish",
+    "tipType": "feeding",
+    "content": "每日喂食1-2次，每次以3-5分钟内吃完为宜。金鱼贪吃，容易过量进食导致消化问题，建议少量多餐。可投喂专用金鱼饲料、水蚤、红虫等。",
+    "importance": 5,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "tip_goldfish_water",
+    "speciesId": "species_goldfish",
+    "tipType": "water_quality",
+    "content": "每周换水20-30%，金鱼产生废物较多，需要良好的过滤系统。水温保持稳定，避免剧烈波动。新水需要除氯处理后使用。",
+    "importance": 5,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "tip_goldfish_tank",
+    "speciesId": "species_goldfish",
+    "tipType": "tank_setup",
+    "content": "金鱼需要较大的游动空间，建议每条金鱼至少配备20升水量。底砂选用圆滑的河沙或裸缸，避免金鱼翻找时受伤。",
+    "importance": 4,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "tip_goldfish_disease",
+    "speciesId": "species_goldfish",
+    "tipType": "disease",
+    "content": "常见疾病包括白点病、烂鳍病、肠炎等。保持水质清洁是预防的关键。发现异常及时隔离治疗，可使用专用鱼药。",
+    "importance": 4,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "tip_goldfish_compatibility",
+    "speciesId": "species_goldfish",
+    "tipType": "compatibility",
+    "content": "金鱼性格温和，适合与同类混养。避免与热带鱼混养（水温需求不同），也不宜与游速快的鱼混养（会抢食）。",
+    "importance": 4,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "tip_neon_feeding",
+    "speciesId": "species_neon_tetra",
+    "tipType": "feeding",
+    "content": "每日喂食1-2次，每次以3分钟内吃完为宜。可投喂薄片饲料、微粒饲料或冷冻丰年虾。口型较小，需选择细小颗粒的饲料。",
+    "importance": 4,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "tip_neon_water",
+    "speciesId": "species_neon_tetra",
+    "tipType": "water_quality",
+    "content": "每周换水20-30%，保持水质清洁。对氨氮敏感，需要成熟的硝化系统。喜欢弱酸性软水环境。",
+    "importance": 5,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "tip_neon_tank",
+    "speciesId": "species_neon_tetra",
+    "tipType": "tank_setup",
+    "content": "建议使用水草缸，提供躲避空间和阴影区域。群养数量建议10条以上，群游效果更佳。灯光不宜过强。",
+    "importance": 3,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "tip_neon_compatibility",
+    "speciesId": "species_neon_tetra",
+    "tipType": "compatibility",
+    "content": "性格温顺，适合与其他小型温和鱼类混养，如孔雀鱼、斑马鱼等。避免与大型鱼或攻击性鱼类混养。",
+    "importance": 4,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "tip_betta_feeding",
+    "speciesId": "species_betta",
+    "tipType": "feeding",
+    "content": "每日喂食1-2次，可接受各种饲料，但建议以高蛋白饲料为主。喜食活食如红虫、丰年虾。每周可禁食1天帮助消化。",
+    "importance": 3,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "tip_betta_tank",
+    "speciesId": "species_betta",
+    "tipType": "tank_setup",
+    "content": "单独饲养或与温和鱼类混养，雄鱼之间绝不能混养。提供浮水植物供其休息，水流不宜过强。最小鱼缸建议5升以上。",
+    "importance": 5,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "tip_betta_disease",
+    "speciesId": "species_betta",
+    "tipType": "disease",
+    "content": "注意预防白点病和烂鳍病，保持水温稳定在24-28°C。发现鱼鳍破损要及时检查水质并适当用药。",
+    "importance": 4,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "tip_betta_compatibility",
+    "speciesId": "species_betta",
+    "tipType": "compatibility",
+    "content": "雄鱼具有强烈领地意识，绝对不能与其他雄性斗鱼混养。可与底栖鱼或小型温和鱼类混养，避免与长鳍鱼或颜色鲜艳的鱼混养。",
+    "importance": 5,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "tip_guppy_feeding",
+    "speciesId": "species_guppy",
+    "tipType": "feeding",
+    "content": "杂食性，每日喂食2-3次，少量多餐。可投喂薄片饲料、颗粒饲料、丰年虾、水蚤等。幼鱼期可增加喂食次数。",
+    "importance": 3,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "tip_guppy_breeding",
+    "speciesId": "species_guppy",
+    "tipType": "breeding",
+    "content": "卵胎生鱼，繁殖力极强。雌鱼每月可产仔20-50条。建议设置繁殖盒或水草丛供幼鱼躲避，否则可能被成鱼吃掉。",
+    "importance": 4,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "tip_guppy_compatibility",
+    "speciesId": "species_guppy",
+    "tipType": "compatibility",
+    "content": "性格温和，适合与其他小型温和鱼类混养。避免与会咬鳍的鱼（如虎皮鱼）混养，以保护雄鱼美丽的尾鳍。",
+    "importance": 4,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "tip_discus_feeding",
+    "speciesId": "species_discus",
+    "tipType": "feeding",
+    "content": "需要高蛋白饮食，可投喂汉堡（自制或商品）、牛心、红虫等。每日喂食2-3次，幼鱼期需要更频繁喂食。",
+    "importance": 5,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "tip_discus_water",
+    "speciesId": "species_discus",
+    "tipType": "water_quality",
+    "content": "对水质要求极高，需要弱酸性软水（pH 5.5-6.8）。建议每日换水10-20%，使用RO水或软化水。水温保持28-32°C。",
+    "importance": 5,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "tip_discus_disease",
+    "speciesId": "species_discus",
+    "tipType": "disease",
+    "content": "容易感染肠道寄生虫和细菌感染。新鱼入缸前建议检疫2-4周。定期驱虫，保持水质稳定是预防的关键。",
+    "importance": 5,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "tip_discus_tank",
+    "speciesId": "species_discus",
+    "tipType": "tank_setup",
+    "content": "需要高度至少45cm的鱼缸，水深足够七彩神仙展示体态。裸缸或简单造景便于清洁，水草缸需要强大的过滤系统。",
+    "importance": 4,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "tip_clownfish_feeding",
+    "speciesId": "species_clownfish",
+    "tipType": "feeding",
+    "content": "杂食性，可投喂海水鱼专用饲料、冷冻丰年虾、糠虾等。每日喂食1-2次，注意不要污染水质。",
+    "importance": 4,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "tip_clownfish_tank",
+    "speciesId": "species_clownfish",
+    "tipType": "tank_setup",
+    "content": "海水缸饲养，需要配备蛋白质分离器、活石等。可与海葵共生，但海葵饲养难度较高，没有海葵小丑鱼也能存活。",
+    "importance": 5,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "tip_clownfish_water",
+    "speciesId": "species_clownfish",
+    "tipType": "water_quality",
+    "content": "需要稳定的海水环境，盐度1.020-1.025，pH 8.0-8.4。定期检测氨氮、亚硝酸盐和硝酸盐，保持在安全范围。",
+    "importance": 5,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "tip_pleco_feeding",
+    "speciesId": "species_pleco",
+    "tipType": "feeding",
+    "content": "主要食用藻类，但仅靠缸内藻类不够。需要补充藻片、蔬菜（黄瓜、西葫芦）和沉底饲料。夜间活动，可在熄灯后投喂。",
+    "importance": 4,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "tip_pleco_tank",
+    "speciesId": "species_pleco",
+    "tipType": "tank_setup",
+    "content": "需要沉木供其啃食和躲避。体型可长到很大，需要大型鱼缸。提供洞穴或躲避处供其白天休息。",
+    "importance": 4,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "tip_arowana_feeding",
+    "speciesId": "species_arowana",
+    "tipType": "feeding",
+    "content": "肉食性，喜食活食如小鱼、虾、蟋蟀、蜈蚣等。幼鱼期每日喂食2-3次，成鱼每日1次或隔日1次。避免投喂金鱼以防传染疾病。",
+    "importance": 5,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "tip_arowana_tank",
+    "speciesId": "species_arowana",
+    "tipType": "tank_setup",
+    "content": "需要超大型鱼缸，建议长度1.5米以上，宽度60cm以上。加盖防止跳缸，龙鱼跳跃能力很强。水流不宜过强。",
+    "importance": 5,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "tip_arowana_disease",
+    "speciesId": "species_arowana",
+    "tipType": "disease",
+    "content": "常见问题包括掉眼、翻鳃、蒙眼等。保持水质稳定，避免惊吓。定期检查并保持良好的饲养环境是预防的关键。",
+    "importance": 4,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "tip_oscar_feeding",
+    "speciesId": "species_oscar",
+    "tipType": "feeding",
+    "content": "肉食性，食量大。可投喂专用慈鲷饲料、虾、小鱼等。智商高，可训练定点喂食，甚至能认识主人。",
+    "importance": 4,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "tip_oscar_tank",
+    "speciesId": "species_oscar",
+    "tipType": "tank_setup",
+    "content": "需要大型鱼缸（建议200升以上），强大的过滤系统。喜欢挖掘，造景简单为宜，避免使用易倒塌的装饰物。",
+    "importance": 5,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "tip_oscar_compatibility",
+    "speciesId": "species_oscar",
+    "tipType": "compatibility",
+    "content": "有攻击性，只能与体型相近的大型鱼混养。会吃掉小型鱼，不适合社区缸。同类混养需要足够大的空间。",
+    "importance": 5,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "tip_flowerhorn_feeding",
+    "speciesId": "species_flowerhorn",
+    "tipType": "feeding",
+    "content": "肉食为主，可投喂专用罗汉饲料、虾、鱼肉等。适当补充增色饲料可使头瘤更加鲜艳。避免过度投喂。",
+    "importance": 4,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "tip_flowerhorn_tank",
+    "speciesId": "species_flowerhorn",
+    "tipType": "tank_setup",
+    "content": "建议单独饲养，攻击性强。需要大型鱼缸和强力过滤。可使用镜子短暂训练起头，但不宜长时间放置。",
+    "importance": 5,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "tip_tiger_barb_compatibility",
+    "speciesId": "species_tiger_barb",
+    "tipType": "compatibility",
+    "content": "有咬鳍习性，建议群养6条以上以分散攻击性。避免与长鳍鱼（如神仙鱼、孔雀鱼、斗鱼）混养。",
+    "importance": 5,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  },
+  {
+    "_id": "tip_tiger_barb_tank",
+    "speciesId": "species_tiger_barb",
+    "tipType": "tank_setup",
+    "content": "活泼好动，需要足够的游动空间。水草缸和裸缸皆可，提供一些躲避处。群养时更有观赏性。",
+    "importance": 3,
+    "createdAt": "2025-01-08T00:00:00.000Z"
+  }
+]

@@ -1,0 +1,227 @@
+<view class="page-container">
+  <!-- 导航栏 -->
+  <navigation-bar title="百科" back="{{false}}" color="black" background="#fff"></navigation-bar>
+
+  <view class="content-wrapper">
+    <!-- 搜索栏 -->
+    <view class="search-bar">
+      <view class="search-input-wrapper">
+        <text class="search-icon">🔍</text>
+        <input
+          class="search-input"
+          placeholder="搜索鱼名、学名..."
+          bindinput="onSearchInput"
+          bindconfirm="onSearchConfirm"
+          value="{{searchQuery}}"
+          placeholder-class="input-placeholder"
+          confirm-type="search"
+        />
+      </view>
+    </view>
+
+    <!-- 分类筛选 -->
+    <scroll-view scroll-x class="category-scroll" enhanced show-scrollbar="{{false}}">
+      <view class="category-list">
+        <view
+          wx:for="{{categories}}"
+          wx:key="_id"
+          class="category-chip {{activeCategory === item._id ? 'category-chip--active' : ''}}"
+          data-id="{{item._id}}"
+          bindtap="onCategorySelect"
+        >
+          {{item.name}}
+        </view>
+      </view>
+    </scroll-view>
+
+    <!-- 加载状态 - 骨架屏 -->
+    <view class="wiki-list" style="padding: var(--spacing-md);" wx:if="{{loading && filteredList.length === 0}}">
+      <view class="skeleton-card" wx:for="{{[1,2,3,4]}}" wx:key="*this">
+        <view class="skeleton-image"></view>
+        <view class="skeleton-content">
+          <view class="skeleton-line short"></view>
+          <view class="skeleton-line medium"></view>
+          <view class="skeleton-line"></view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 鱼类列表 -->
+    <scroll-view
+      scroll-y
+      class="wiki-scroll"
+      enhanced
+      show-scrollbar="{{false}}"
+      bindscrolltolower="onReachBottom"
+      wx:if="{{!loading || filteredList.length > 0}}"
+    >
+      <view class="wiki-list" wx:if="{{filteredList.length > 0}}">
+        <view
+          class="wiki-card"
+          wx:for="{{filteredList}}"
+          wx:key="_id"
+          data-id="{{item._id}}"
+          bindtap="onFishClick"
+        >
+          <!-- 图片 1:1 -->
+          <view class="wiki-image-wrapper">
+            <image wx:if="{{item.imageUrl}}" src="{{item.imageUrl}}" mode="aspectFill" class="wiki-image"></image>
+            <text wx:else class="wiki-emoji">🐟</text>
+          </view>
+          
+          <view class="wiki-info">
+             <view class="flex justify-between items-center mb-xs">
+                 <text class="wiki-name">{{item.name}}</text>
+                 <view class="difficulty-badge {{item.difficulty || 'easy'}}">
+                     {{item.difficulty === 'easy' ? '简单' : item.difficulty === 'medium' ? '中等' : item.difficulty === 'hard' ? '困难' : '简单'}}
+                 </view>
+             </view>
+             
+             <view class="wiki-row">
+                <text class="wiki-label">习性</text>
+                <text class="wiki-value">{{item.habitDisplay}}</text>
+             </view>
+             <view class="wiki-row">
+                <text class="wiki-label">饲养</text>
+                <text class="wiki-value">{{item.methodDisplay}}</text>
+             </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="empty-state" wx:if="{{!loading && filteredList.length === 0}}">
+        <text class="text-muted">未找到相关鱼类</text>
+      </view>
+
+      <!-- 加载更多 -->
+      <view class="load-more" wx:if="{{filteredList.length > 0 && hasMore}}">
+        <text class="text-muted text-sm">上拉加载更多</text>
+      </view>
+      <view class="load-more" wx:if="{{filteredList.length > 0 && !hasMore}}">
+        <text class="text-muted text-sm">已加载全部</text>
+      </view>
+
+      <!-- 底部安全区 -->
+      <view class="safe-area-bottom"></view>
+    </scroll-view>
+  </view>
+</view>
+
+<!-- 详情弹窗（在 page-container 外部，可正确覆盖 tabbar） -->
+<view wx:if="{{showDetailPopup}}" class="popup-mask" bindtap="onCloseDetail">
+    <view class="popup popup--bottom" catchtap="stopPropagation" wx:if="{{currentFish}}">
+      <view class="popup__header">
+        <text class="popup__close" bindtap="onCloseDetail">×</text>
+        <text class="popup__title">鱼类档案</text>
+        <view class="popup__placeholder"></view>
+      </view>
+
+      <scroll-view class="popup__body" scroll-y enhanced show-scrollbar="{{false}}">
+         <!-- 第一层：基础信息头部 -->
+         <view class="detail-header">
+            <view class="detail-avatar">
+              <image wx:if="{{currentFish.imageUrl}}" src="{{currentFish.imageUrl}}" mode="aspectFill" class="detail-avatar-image"></image>
+              <text wx:else>🐟</text>
+            </view>
+            <view class="detail-titles">
+               <text class="detail-name">{{currentFish.name}}</text>
+               <text class="detail-eng">{{currentFish.englishName || '-'}}</text>
+               <text class="detail-sci">{{currentFish.scientificName || '-'}}</text>
+            </view>
+         </view>
+
+         <!-- 第二层：养殖可行性参数 -->
+         <view class="detail-section">
+            <view class="detail-grid">
+               <view class="grid-item">
+                  <text class="grid-label">饲养难度</text>
+                  <text class="grid-value">{{currentFish.difficulty === 'easy' ? '简单' : currentFish.difficulty === 'medium' ? '中等' : currentFish.difficulty === 'hard' ? '困难' : '-'}}</text>
+               </view>
+               <view class="grid-item">
+                  <text class="grid-label">温度</text>
+                  <text class="grid-value" wx:if="{{currentFish.tempMin != null && currentFish.tempMax != null}}">{{currentFish.tempMin}}-{{currentFish.tempMax}}°C</text>
+                  <text class="grid-value" wx:else>-</text>
+               </view>
+               <view class="grid-item">
+                  <text class="grid-label">pH</text>
+                  <text class="grid-value" wx:if="{{currentFish.phMin != null && currentFish.phMax != null}}">{{currentFish.phMin}}-{{currentFish.phMax}}</text>
+                  <text class="grid-value" wx:else>-</text>
+               </view>
+               <view class="grid-item">
+                  <text class="grid-label">体长</text>
+                  <text class="grid-value" wx:if="{{currentFish.bodyLengthMin != null && currentFish.bodyLengthMax != null}}">{{currentFish.bodyLengthMin}}-{{currentFish.bodyLengthMax}}cm</text>
+                  <text class="grid-value" wx:else>-</text>
+               </view>
+               <view class="grid-item" wx:if="{{currentFish.lifespan}}">
+                  <text class="grid-label">寿命</text>
+                  <text class="grid-value">{{currentFish.lifespan}}年</text>
+               </view>
+               <view class="grid-item" wx:if="{{currentFish.origin}}">
+                  <text class="grid-label">产地</text>
+                  <text class="grid-value">{{currentFish.origin}}</text>
+               </view>
+            </view>
+         </view>
+
+         <!-- 第三层：深入了解 - 简介 -->
+         <view class="detail-section" wx:if="{{currentFish.description}}">
+            <text class="section-title">简介</text>
+            <text class="section-text">{{currentFish.description}}</text>
+         </view>
+
+         <!-- 饲养技巧（高亮提示框） -->
+         <view class="detail-section care-tip-box" wx:if="{{currentFish.careTip}}">
+            <view class="care-tip-header">
+               <text class="care-tip-icon">💡</text>
+               <text class="care-tip-title">饲养技巧</text>
+            </view>
+            <text class="care-tip-text">{{currentFish.careTip}}</text>
+         </view>
+
+         <!-- 习性信息 -->
+         <view class="detail-section">
+            <text class="section-title">习性</text>
+            <view class="info-row">
+               <text class="info-label">性格：</text>
+               <text class="info-value">{{currentFish.temperament === 'peaceful' ? '温和' : currentFish.temperament === 'semi-aggressive' ? '半攻击性' : currentFish.temperament === 'aggressive' ? '攻击性' : '-'}}</text>
+            </view>
+            <view class="info-row" wx:if="{{currentFish.diet}}">
+               <text class="info-label">食性：</text>
+               <text class="info-value">{{currentFish.diet}}</text>
+            </view>
+            <view class="info-row" wx:if="{{currentFish.compatibility}}">
+               <text class="info-label">混养：</text>
+               <text class="info-value">{{currentFish.compatibility}}</text>
+            </view>
+            <view class="info-row" wx:if="{{currentFish.category}}">
+               <text class="info-label">分类：</text>
+               <text class="info-value">{{currentFish.category.name}}{{currentFish.subcategory ? ' / ' + currentFish.subcategory.name : ''}}</text>
+            </view>
+         </view>
+
+         <!-- 第四层：进阶信息 - 环境要求 -->
+         <view class="detail-section" wx:if="{{currentFish.environment}}">
+            <text class="section-title">环境要求</text>
+            <text class="section-text">{{currentFish.environment}}</text>
+         </view>
+
+         <!-- 饲养特点 -->
+         <view class="detail-section" wx:if="{{currentFish.husbandryFeatures}}">
+            <text class="section-title">饲养特点</text>
+            <text class="section-text">{{currentFish.husbandryFeatures}}</text>
+         </view>
+
+         <!-- 注意事项（警告提示框） -->
+         <view class="detail-section notes-box" wx:if="{{currentFish.notes}}">
+            <view class="notes-header">
+               <text class="notes-icon">⚠️</text>
+               <text class="notes-title">注意事项</text>
+            </view>
+            <text class="notes-text">{{currentFish.notes}}</text>
+         </view>
+
+         <!-- 底部安全区 -->
+         <view style="height: 40rpx;"></view>
+      </scroll-view>
+    </view>
+  </view>

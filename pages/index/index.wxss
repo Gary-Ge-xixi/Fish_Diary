@@ -1,0 +1,1434 @@
+/**
+ * index.wxss - shadcn/ui 极简风格
+ * 适配 iPhone SE ~ iPhone 13 Pro Max
+ */
+
+/* 注意：Skyline 模式下不能使用 page 选择器，page 样式在 app.wxss 中设置 */
+
+/* 页面容器 - flex 布局自动计算高度 */
+/* 页面容器 - flex 布局自动计算高度 */
+.page-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100%;
+}
+
+/* 导航栏包裹容器 */
+.nav-wrapper {
+  flex-shrink: 0;
+  width: 100%;
+}
+
+/* 内容滚动区 - flex: 1 自动填充剩余空间 */
+.page-scroll {
+  flex: 1;
+  width: 100%;
+  min-height: 0; /* 关键：flex 子元素需要这个才能正确滚动 */
+}
+
+/* 加载状态 */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 200rpx;
+}
+
+/* 空状态 */
+.empty-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 200rpx;
+}
+
+/* 区块 */
+.section {
+  padding: var(--spacing-md) var(--spacing-md);
+}
+
+/* 第一个 section 顶部间距更小 */
+.section:first-child {
+  padding-top: var(--spacing-sm);
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-md);
+}
+
+.section-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+/* 鱼缸选择器 */
+.tank-scroll {
+  width: 100%;
+  /* 关键：必须设置明确高度，否则 Skyline 模式下可能塌陷 */
+  height: 140rpx;
+}
+
+.tank-list {
+  display: flex;
+  gap: var(--spacing-md);
+  /* 确保列表高度填满滚动容器 */
+  height: 100%;
+  align-items: flex-start;
+}
+
+.tank-item {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 120rpx;
+  /* 确保 item 不会超出容器 */
+  height: 100%;
+}
+
+.tank-item__cover {
+  width: 96rpx;
+  height: 96rpx;
+  border-radius: var(--radius);
+  background-color: var(--muted);
+  border: 2rpx solid transparent;
+}
+
+.tank-item--active .tank-item__cover {
+  border-color: var(--foreground);
+}
+
+.tank-item__name {
+  font-size: 22rpx;
+  color: var(--muted-foreground);
+  margin-top: var(--spacing-xs);
+  max-width: 96rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.tank-item--active .tank-item__name {
+  color: var(--foreground);
+  font-weight: 500;
+}
+
+.tank-item--add {
+  opacity: 0.6;
+}
+
+.tank-item__add-icon {
+  width: 96rpx;
+  height: 96rpx;
+  border-radius: var(--radius);
+  border: 2rpx dashed var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40rpx;
+  color: var(--muted-foreground);
+}
+
+/* 统计网格 - 2x2 分块布局 */
+.stats-grid {
+  display: flex;
+  flex-wrap: wrap;
+  min-height: 240rpx; /* 固定最小高度，防止加载时跳动 */
+}
+
+.stat-item {
+  /* 每个占50%宽度，形成2x2布局 */
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--spacing-lg) 0;
+  box-sizing: border-box;
+}
+
+.stat-value {
+  font-family: var(--font-mono);
+  font-size: 40rpx;
+  font-weight: 700;
+  color: var(--foreground);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+/* 统计数值尺寸变体 */
+.stat-value--sm {
+  font-size: var(--text-xl);
+}
+
+.stat-value--lg {
+  font-size: 48rpx;
+}
+
+.stat-label {
+  font-size: var(--text-sm);
+  color: var(--muted-foreground);
+  margin-top: var(--spacing-sm);
+  letter-spacing: 0.01em;
+}
+
+.stats-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-lg);
+  min-height: 240rpx; /* 与 stats-grid 一致高度，防止跳动 */
+}
+
+/* 标签页 */
+.tabs {
+  display: flex;
+  border-bottom: 2rpx solid var(--border);
+  overflow-x: auto;
+}
+
+.tab-item {
+  flex-shrink: 0;
+  padding: var(--spacing-md) var(--spacing-lg);
+  font-size: 26rpx;
+  color: var(--muted-foreground);
+  position: relative;
+}
+
+.tab-item--active {
+  color: var(--foreground);
+  font-weight: 500;
+}
+
+.tab-item--active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: var(--spacing-lg);
+  right: var(--spacing-lg);
+  height: 4rpx;
+  background-color: var(--foreground);
+  border-radius: 2rpx;
+}
+
+/* Tab 内容 */
+.tab-content {
+  padding: var(--spacing-lg) 0;
+}
+
+.tab-panel {
+  min-height: 200rpx;
+}
+
+.empty-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-xl) 0;
+}
+
+/* ========== 添加鱼缸弹窗 ========== */
+
+/* 弹窗遮罩 - 覆盖全屏包括 tabBar */
+.popup-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000; /* 高于 tabBar z-index: 500 */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+/* page-container 内容容器 */
+.popup-content {
+  display: flex;
+  flex-direction: column;
+  max-height: 70vh;
+  background: var(--card);
+}
+
+/* 半屏弹窗 - 底部弹出 */
+.popup--bottom {
+  position: relative;
+  width: 100%;
+  background: var(--card);
+  border-radius: 24rpx 24rpx 0 0;
+  display: block;  /* Skyline 下避免 flex 高度问题 */
+  animation: slideUp 0.25s ease-out;
+  overflow: visible;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* 弹窗头部 - 三栏布局 */
+.popup__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-lg) var(--spacing-lg);
+  border-bottom: 1rpx solid var(--border);
+  flex-shrink: 0;
+  background: var(--card);
+}
+
+.popup__title {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: var(--foreground);
+  letter-spacing: -0.01em;
+}
+
+.popup__close {
+  font-size: 44rpx;
+  color: var(--muted-foreground);
+  width: 56rpx;
+  height: 56rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full);
+  transition: background-color 0.15s;
+}
+
+.popup__close:active {
+  background: var(--muted);
+}
+
+.popup__placeholder {
+  width: 56rpx;
+}
+
+/* 弹窗内容区 - Skyline 模式必须设置固定高度！ */
+.popup__body {
+  width: 100%;
+  height: 800rpx;  /* Skyline 要求固定高度，否则高度塌陷为 0 */
+  flex-shrink: 0;
+}
+
+/* 表单内容包裹器 */
+.form-wrapper {
+  display: block;
+  width: 100%;
+  padding: var(--spacing-lg);
+  box-sizing: border-box;
+  /* 确保内容高度大于容器，触发滚动 */
+  padding-bottom: 100rpx;
+}
+
+/* 弹窗底部 - 处理安全区域 */
+.popup__footer {
+  padding: var(--spacing-lg) var(--spacing-lg);
+  padding-bottom: calc(var(--spacing-lg) + env(safe-area-inset-bottom));
+  border-top: 1rpx solid var(--border);
+  flex-shrink: 0;
+  background: var(--card);
+}
+
+/* 表单项 - Skyline 需要明确 display 和尺寸 */
+.form-item {
+  display: block;
+  width: 100%;
+  margin-bottom: var(--spacing-xl);
+}
+
+.form-label {
+  display: block;
+  width: 100%;
+  font-size: 26rpx;
+  font-weight: 500;
+  color: var(--foreground);
+  margin-bottom: var(--spacing-sm);
+  letter-spacing: -0.01em;
+  line-height: 1.4;
+}
+
+.form-hint {
+  display: block;
+  font-size: var(--text-xs);
+  color: var(--muted-foreground);
+  margin-top: var(--spacing-xs);
+  line-height: 1.5;
+}
+
+/* Shadcn Field Description 样式 */
+.form-description {
+  display: block;
+  font-size: 22rpx;
+  color: var(--muted-foreground);
+  margin-top: 8rpx;
+  line-height: 1.5;
+}
+
+.required {
+  color: var(--destructive);
+  margin-left: 4rpx;
+}
+
+.form-error {
+  display: block;
+  font-size: var(--text-xs);
+  color: var(--destructive);
+  margin-bottom: var(--spacing-xs);
+  line-height: 1.4;
+}
+
+/* 图片选择器 */
+.image-picker {
+  width: 200rpx;
+  height: 200rpx;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--muted);
+}
+
+.image-picker__preview {
+  width: 100%;
+  height: 100%;
+}
+
+.image-picker__placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 2rpx dashed var(--border);
+  border-radius: var(--radius);
+  box-sizing: border-box;
+}
+
+.image-picker__icon {
+  font-size: 64rpx;
+  color: var(--muted-foreground);
+  line-height: 1;
+}
+
+.image-picker__text {
+  font-size: 24rpx;
+  color: var(--muted-foreground);
+  margin-top: var(--spacing-xs);
+}
+
+/* 尺寸选项 */
+.size-options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.size-option {
+  padding: var(--spacing-md);
+  border: 2rpx solid var(--border);
+  border-radius: var(--radius);
+  background: var(--background);
+  box-sizing: border-box;
+}
+
+.size-option--active {
+  border-color: var(--foreground);
+  background: var(--accent);
+}
+
+.size-option__label {
+  display: block;
+  font-size: 28rpx;
+  font-weight: 500;
+  color: var(--foreground);
+}
+
+/* ========== 喂养记录相关 ========== */
+
+/* 吸顶日期筛选 */
+.sticky-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--background);
+  padding: var(--spacing-sm) var(--spacing-md);
+  margin-left: -24rpx; /* 抵消 section padding */
+  margin-right: -24rpx;
+  padding-left: 24rpx;
+  padding-right: 24rpx;
+}
+
+.date-filter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.date-picker-trigger {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: #fff;
+  border-radius: 32rpx;
+  border: 2rpx solid var(--border);
+}
+
+.date-text {
+  font-size: 26rpx;
+  font-weight: 500;
+  color: var(--foreground);
+}
+
+.date-icon {
+  font-size: 20rpx;
+  color: var(--muted-foreground);
+}
+
+.add-feeding-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: var(--primary);
+  border-radius: 32rpx;
+  color: var(--primary-foreground);
+  font-size: 26rpx;
+  font-weight: 500;
+}
+
+.add-icon {
+  font-size: 32rpx;
+  line-height: 1;
+  font-weight: 300;
+}
+
+/* 喂食列表 */
+.feeding-list {
+  padding-top: var(--spacing-md);
+}
+
+.feeding-item {
+  display: flex;
+  margin-bottom: var(--spacing-md);
+}
+
+.feeding-time {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100rpx;
+  padding-top: var(--spacing-sm);
+  position: relative;
+}
+
+.time-text {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+/* 时间轴点 */
+.time-dot {
+  width: 12rpx;
+  height: 12rpx;
+  border-radius: 50%;
+  background: var(--border);
+  margin-top: var(--spacing-xs);
+}
+
+/* 喂食卡片 */
+.feeding-card {
+  flex: 1;
+  background: #fff;
+  padding: var(--spacing-md);
+  border-radius: var(--radius);
+  border: 2rpx solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.feeding-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.feeding-type {
+  font-size: 28rpx;
+  font-weight: 500;
+  color: var(--foreground);
+}
+
+.feeding-name {
+  font-size: 24rpx;
+  color: var(--muted-foreground);
+  margin-top: 4rpx;
+}
+
+.feeding-amount {
+  font-size: 26rpx;
+  color: var(--muted-foreground);
+}
+
+/* 加载更多 */
+.load-more, .no-more {
+  display: flex;
+  justify-content: center;
+  padding: var(--spacing-md) 0;
+}
+
+.loading-panel {
+  display: flex;
+  justify-content: center;
+  padding: var(--spacing-xl);
+}
+
+/* 输入框 Picker 样式 */
+.input-picker {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 88rpx;
+  padding: 0 var(--spacing-lg);
+  background: var(--card);
+  border: 1rpx solid var(--input);
+  border-radius: var(--radius);
+  font-size: var(--text-base);
+  color: var(--foreground);
+  box-sizing: border-box;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.input-picker:active {
+  border-color: var(--ring);
+  box-shadow: 0 0 0 2rpx rgba(24, 24, 27, 0.1);
+}
+
+/* 标签组 (Chips) */
+.chip-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+}
+
+.chip {
+  padding: 14rpx 28rpx;
+  border-radius: var(--radius-full);
+  background: var(--card);
+  color: var(--muted-foreground);
+  font-size: var(--text-sm);
+  border: 1rpx solid var(--border);
+  transition: all 0.15s;
+}
+
+.chip:active {
+  background: var(--muted);
+}
+
+.chip--active {
+  background: var(--primary);
+  color: var(--primary-foreground);
+  font-weight: 500;
+  border-color: var(--primary);
+}
+
+/* ========== 鱼类列表 (Shadcn Card) ========== */
+.fish-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  padding: 0 var(--spacing-md);
+  margin-top: var(--spacing-sm);
+}
+
+.fish-item {
+  background: #fff;
+  border: 2rpx solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--spacing-md);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.fish-item:active {
+  background: var(--muted);
+}
+
+.fish-avatar {
+  width: 88rpx;
+  height: 88rpx;
+  background: var(--muted);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 44rpx;
+  flex-shrink: 0;
+  border: 2rpx solid transparent;
+  overflow: hidden;
+}
+
+.fish-avatar-image {
+  width: 100%;
+  height: 100%;
+}
+
+.fish-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+  overflow: hidden;
+}
+
+.fish-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+/* 箭头图标 - shadcn UI 风格 */
+.arrow-icon {
+  width: 32rpx;
+  height: 32rpx;
+  flex-shrink: 0;
+}
+
+.fish-name {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: var(--foreground);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 60%;
+  letter-spacing: -0.01em;
+}
+
+.fish-category {
+  font-size: var(--text-xs);
+  color: var(--muted-foreground);
+  background: var(--secondary);
+  padding: 6rpx 14rpx;
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+}
+
+.fish-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+  margin-top: 8rpx;
+}
+
+.meta-row {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.meta-label {
+  font-size: 24rpx;
+  color: var(--muted-foreground);
+}
+
+.meta-value {
+  font-size: 24rpx;
+  font-weight: 500;
+  color: var(--foreground);
+}
+
+.meta-value.price {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  font-size: 26rpx;
+  color: var(--foreground);
+  letter-spacing: -0.02em;
+}
+
+.meta-divider {
+  width: 2rpx;
+  height: 20rpx;
+  background: var(--border);
+  margin: 0 4rpx;
+}
+
+.fish-date {
+  font-size: var(--text-xs);
+  color: var(--muted-foreground);
+}
+
+/* 浮动按钮 - 位于 tabbar 上方 */
+.floating-add-btn {
+  position: fixed;
+  bottom: calc(120rpx + env(safe-area-inset-bottom)); /* 100rpx tabbar + 20rpx 间距 */
+  right: 32rpx;
+  z-index: 100;
+  box-shadow: 0 4rpx 16rpx rgba(0,0,0,0.15);
+  font-weight: 600;
+}
+
+/* ========== 编辑弹窗 ========== */
+.fish-edit-header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+    padding-bottom: var(--spacing-md);
+    border-bottom: 1rpx solid var(--border);
+}
+
+.fish-avatar.large {
+    width: 100rpx;
+    height: 100rpx;
+    font-size: 50rpx;
+}
+
+.fish-edit-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8rpx;
+}
+
+.fish-name.large {
+    font-size: 32rpx;
+}
+
+.form-section {
+    margin-bottom: var(--spacing-md);
+}
+
+/* 弹窗内的 section-title 使用更小字号和底部间距 */
+.form-section .section-title {
+    font-size: 26rpx;
+    margin-bottom: var(--spacing-sm);
+}
+
+.btn--danger.btn--outline {
+    background: transparent;
+    color: #ff4d4f;
+    border: 1rpx solid #ff4d4f;
+}
+
+/* ========== 鱼缸信息显示 ========== */
+.tank-info-display {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  background: var(--muted);
+  border-radius: var(--radius);
+}
+
+.tank-info-cover {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: var(--radius);
+  flex-shrink: 0;
+}
+
+.tank-info-cover--placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--background);
+  font-size: 40rpx;
+}
+
+.tank-info-name {
+  font-size: 28rpx;
+  font-weight: 500;
+  color: var(--foreground);
+}
+
+/* ========== 换水记录 ========== */
+.water-change-list, .equipment-list {
+  padding: 0 var(--spacing-md);
+  padding-top: var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.record-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  background: #fff;
+  border: 2rpx solid var(--border);
+  border-radius: var(--radius);
+}
+
+.record-icon {
+  width: 80rpx;
+  height: 80rpx;
+  background: #eff6ff;
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40rpx;
+  flex-shrink: 0;
+}
+
+.record-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.record-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-md);
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 2rpx solid var(--border);
+}
+
+.record-title {
+  font-size: 28rpx;
+  font-weight: 500;
+  color: var(--foreground);
+}
+
+.record-date {
+  font-size: 24rpx;
+  color: var(--muted-foreground);
+}
+
+/* ========== 设备列表 ========== */
+.equipment-card {
+  padding: var(--spacing-md);
+  background: #fff;
+  border: 2rpx solid var(--border);
+  border-radius: var(--radius);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.eq-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.eq-type-badge {
+  padding: 4rpx 12rpx;
+  background: var(--muted);
+  border-radius: 8rpx;
+  font-size: 22rpx;
+  color: var(--muted-foreground);
+  font-weight: 500;
+}
+
+.eq-price {
+  font-family: var(--font-mono);
+  font-size: 28rpx;
+  font-weight: 600;
+  color: var(--foreground);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+.eq-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.eq-name {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.eq-meta {
+  font-size: 24rpx;
+  color: var(--muted-foreground);
+  margin-top: 4rpx;
+}
+
+/* ========== 水质记录 ========== */
+.quality-list {
+  padding: 0 var(--spacing-md);
+  padding-top: var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.quality-card {
+  padding: var(--spacing-md);
+  background: #fff;
+  border: 2rpx solid var(--border);
+  border-radius: var(--radius);
+}
+
+.q-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-md);
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 2rpx solid var(--border);
+}
+
+.q-date {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.q-time {
+  font-size: 24rpx;
+}
+
+.q-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+}
+
+.q-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 140rpx;
+  padding: var(--spacing-sm);
+  background: var(--muted);
+  border-radius: var(--radius);
+}
+
+.q-label {
+  font-size: 22rpx;
+  color: var(--muted-foreground);
+  margin-bottom: 4rpx;
+}
+
+.q-value {
+  font-family: var(--font-mono);
+  font-size: 32rpx;
+  font-weight: 600;
+  color: var(--foreground);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+.q-image {
+  width: 100%;
+  height: 300rpx;
+  border-radius: var(--radius);
+  margin-top: var(--spacing-md);
+}
+
+.feeding-thumb {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 8rpx;
+  margin-right: var(--spacing-md);
+  background: var(--muted);
+}
+
+.icon-btn {
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: 50%;
+  background: #fff;
+  border: 2rpx solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32rpx;
+}
+
+/* ========== 图表 ========== */
+.chart-container {
+  margin: var(--spacing-md);
+  margin-top: var(--spacing-sm);
+  padding: var(--spacing-md);
+  background: #fff;
+  border: 2rpx solid var(--border);
+  border-radius: var(--radius);
+}
+
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-md);
+}
+
+.chart-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.chart-tabs {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+.chart-tab {
+  font-size: 24rpx;
+  color: var(--muted-foreground);
+  padding: 4rpx 16rpx;
+  border-radius: 24rpx;
+  background: var(--secondary);
+}
+
+.chart-tab.active {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+
+.trend-chart {
+  width: 100%;
+  height: 300rpx;
+}
+
+/* ========== 统一记录列表样式（与鱼类列表一致）========== */
+
+/* 日期筛选 */
+.record-filter {
+  padding: 0 var(--spacing-md);
+  margin-bottom: var(--spacing-sm);
+}
+
+.filter-row {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.filter-clear {
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-size: 24rpx;
+  color: var(--muted-foreground);
+  background: var(--muted);
+  border-radius: 24rpx;
+}
+
+/* 记录列表容器 */
+.record-list-unified {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  padding: 0 var(--spacing-md);
+}
+
+/* 记录卡片 - 与 .fish-item 一致 */
+.record-card {
+  background: #fff;
+  border: 2rpx solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--spacing-md);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-md);
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.record-card:active {
+  background: var(--muted);
+}
+
+/* 记录头像/图标 - 与 .fish-avatar 一致 */
+.record-avatar {
+  width: 88rpx;
+  height: 88rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40rpx;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+/* 记录信息区 - 与 .fish-info 一致 */
+.record-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+  overflow: hidden;
+}
+
+/* 记录头部 - 与 .fish-header 一致 */
+.record-info-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+/* 记录名称 - 与 .fish-name 一致 */
+.record-name {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: var(--foreground);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 70%;
+  letter-spacing: -0.01em;
+}
+
+/* 记录元数据 - 与 .fish-meta 一致 */
+.record-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+  margin-top: 8rpx;
+}
+
+/* 记录时间 */
+.record-time {
+  font-size: 22rpx;
+  color: var(--muted-foreground);
+  opacity: 0.8;
+}
+
+/* ========== 水质数据横向滚动 ========== */
+.quality-data-scroll {
+  width: 100%;
+  height: 64rpx;
+  margin-top: 8rpx;
+}
+
+.quality-data-row {
+  display: flex;
+  gap: var(--spacing-sm);
+  height: 100%;
+  align-items: center;
+}
+
+.quality-tag {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  padding: 8rpx 16rpx;
+  background: var(--muted);
+  border-radius: 24rpx;
+  flex-shrink: 0;
+}
+
+.quality-tag-label {
+  font-size: 22rpx;
+  color: var(--muted-foreground);
+}
+
+.quality-tag-value {
+  font-family: var(--font-mono);
+  font-size: 24rpx;
+  font-weight: 600;
+  color: var(--foreground);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+/* ========== 记录类型选择标签 ========== */
+.tags-row {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+.tag-option {
+  flex: 1;
+  padding: var(--spacing-md);
+  text-align: center;
+  background: var(--background);
+  border: 2rpx solid var(--border);
+  border-radius: var(--radius);
+  font-size: 28rpx;
+  color: var(--muted-foreground);
+  transition: all 0.2s;
+}
+
+.tag-option.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--primary-foreground);
+  font-weight: 500;
+}
+
+/* 换水量标签行 - 防止换行 */
+.water-percent-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+
+.water-percent-value {
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ========== 骨架屏样式 ========== */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.skeleton-shimmer {
+  background: linear-gradient(90deg, var(--muted) 25%, var(--background) 50%, var(--muted) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* 鱼缸选择器骨架屏 */
+.skeleton-tank-list {
+  display: flex;
+  gap: var(--spacing-md);
+  height: 100%;
+  align-items: flex-start;
+}
+
+.skeleton-tank-item {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 120rpx;
+  gap: var(--spacing-xs);
+}
+
+.skeleton-tank-cover {
+  width: 96rpx;
+  height: 96rpx;
+  border-radius: var(--radius);
+  background: linear-gradient(90deg, var(--muted) 25%, var(--background) 50%, var(--muted) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.skeleton-tank-name {
+  width: 80rpx;
+  height: 24rpx;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(90deg, var(--muted) 25%, var(--background) 50%, var(--muted) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* 统计卡片骨架屏 */
+.skeleton-stats-grid {
+  display: flex;
+  flex-wrap: wrap;
+  min-height: 240rpx;
+}
+
+.skeleton-stat-item {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-lg) 0;
+  gap: var(--spacing-sm);
+}
+
+.skeleton-stat-value {
+  width: 120rpx;
+  height: 44rpx;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(90deg, var(--muted) 25%, var(--background) 50%, var(--muted) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.skeleton-stat-label {
+  width: 80rpx;
+  height: 24rpx;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(90deg, var(--muted) 25%, var(--background) 50%, var(--muted) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* 记录/鱼类列表骨架屏 */
+.skeleton-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  padding: 0 var(--spacing-md);
+}
+
+.skeleton-card {
+  display: flex;
+  background-color: var(--card);
+  border-radius: var(--radius);
+  padding: var(--spacing-md);
+  gap: var(--spacing-md);
+  border: 2rpx solid var(--border);
+}
+
+.skeleton-avatar {
+  width: 88rpx;
+  height: 88rpx;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: linear-gradient(90deg, var(--muted) 25%, var(--background) 50%, var(--muted) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.skeleton-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.skeleton-line {
+  height: 28rpx;
+  background: linear-gradient(90deg, var(--muted) 25%, var(--background) 50%, var(--muted) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: var(--radius-sm);
+}
+
+.skeleton-line.short {
+  width: 50%;
+}
+
+.skeleton-line.medium {
+  width: 75%;
+}

@@ -1,0 +1,20 @@
+{
+  "envId": "cloudbase-9gnb2cyn0387e399",
+  "functionRoot": "cloudfunctions",
+  "functions": [
+    { "name": "user-update", "config": { "timeout": 60, "runtime": "Nodejs10.15" } },
+    { "name": "user-login", "config": { "timeout": 60, "runtime": "Nodejs10.15" } },
+    { "name": "tank-manage", "config": { "timeout": 60, "runtime": "Nodejs10.15" } },
+    { "name": "fish-manage", "config": { "timeout": 60, "runtime": "Nodejs10.15" } },
+    { "name": "equipment-manage", "config": { "timeout": 60, "runtime": "Nodejs10.15" } },
+    { "name": "feeding-record", "config": { "timeout": 60, "runtime": "Nodejs10.15" } },
+    { "name": "feeding-schedule", "config": { "timeout": 60, "runtime": "Nodejs10.15" } },
+    { "name": "water-change-record", "config": { "timeout": 60, "runtime": "Nodejs10.15" } },
+    { "name": "water-change-schedule", "config": { "timeout": 60, "runtime": "Nodejs10.15" } },
+    { "name": "water-quality-record", "config": { "timeout": 60, "runtime": "Nodejs10.15" } },
+    { "name": "tank-statistics", "config": { "timeout": 60, "runtime": "Nodejs10.15" } },
+    { "name": "fish-species-query", "config": { "timeout": 60, "runtime": "Nodejs10.15" } },
+    { "name": "reminder-trigger", "config": { "timeout": 60, "runtime": "Nodejs10.15" } },
+    { "name": "db-init", "config": { "timeout": 60, "runtime": "Nodejs10.15" } }
+  ]
+}

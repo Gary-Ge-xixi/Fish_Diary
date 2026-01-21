@@ -1,0 +1,21 @@
+# macOS
+.DS_Store
+
+# Dependencies
+node_modules/
+
+# Private config
+project.private.config.json
+
+# Virtual environments
+.venv*/
+
+# IDE
+.idea/
+.vscode/
+
+# Logs
+*.log
+
+# Local development
+miniprogram_npm/

@@ -1,0 +1,268 @@
+/* 确保状态栏区域为白色背景 */
+page {
+  background-color: #fff;
+}
+
+.page-container {
+    height: 100vh;
+    background-color: var(--background);
+}
+
+/* 用户信息区域 */
+.user-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: var(--spacing-2xl) 0;
+    background-color: var(--card);
+    margin-bottom: var(--spacing-md);
+}
+
+.avatar-wrapper {
+    padding: 0;
+    width: 180rpx !important;
+    height: 180rpx !important;
+    border-radius: 50%;
+    margin-bottom: var(--spacing-lg);
+    background: none;
+    border: 4rpx solid var(--border);
+    overflow: hidden;
+}
+
+.avatar {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+
+.avatar-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background-color: var(--muted);
+    font-size: 80rpx;
+}
+
+.nickname-input {
+    text-align: center;
+    font-size: 32rpx;
+    font-weight: 600;
+    padding: var(--spacing-sm) var(--spacing-lg);
+    border-bottom: 2rpx solid transparent;
+    border-radius: var(--radius);
+    transition: all 0.15s;
+    letter-spacing: -0.01em;
+    color: var(--foreground);
+}
+
+.nickname-input:focus {
+    background-color: var(--muted);
+    border-bottom-color: var(--ring);
+}
+
+/* 菜单列表 - 通栏展示 */
+.menu-list-full {
+    background-color: var(--card);
+    margin-top: var(--spacing-md);
+}
+
+/* 重置 button 元素默认样式 */
+.menu-list-full button {
+    padding: 0;
+    margin: 0;
+    line-height: inherit;
+    background: none;
+    border: none;
+    border-radius: 0;
+    font-size: inherit;
+    font-weight: inherit;
+    color: inherit;
+    text-align: left;
+}
+
+.menu-list-full button::after {
+    display: none;
+}
+
+.menu-item-full {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-lg) var(--spacing-lg);
+    min-height: 96rpx;
+    border-bottom: 1rpx solid var(--border);
+    background-color: transparent;
+    font-size: var(--text-base);
+    font-weight: 400;
+    width: 100%;
+    margin: 0;
+    border-radius: 0;
+    transition: background-color 0.15s;
+    box-sizing: border-box;
+    /* 重置 button 默认样式 */
+    line-height: normal;
+    text-align: left;
+}
+
+.menu-item-full:active {
+    background-color: var(--muted);
+}
+
+.menu-item-full::after {
+    border: none;
+}
+
+.menu-item-full:last-child {
+    border-bottom: none;
+}
+
+/* 菜单项左侧内容 */
+.menu-item-left {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    pointer-events: none;
+    flex: 1;
+    min-width: 0;
+}
+
+/* SVG 图标样式 */
+.menu-icon-svg {
+    width: 40rpx;
+    height: 40rpx;
+    flex-shrink: 0;
+}
+
+/* 菜单文本区域 */
+.menu-item-text {
+    display: flex;
+    flex-direction: column;
+    gap: 4rpx;
+    min-width: 0;
+}
+
+/* 菜单标题 */
+.menu-title {
+    font-size: 28rpx;
+    font-weight: 500;
+    color: var(--foreground);
+    letter-spacing: -0.01em;
+}
+
+/* 菜单副标题 */
+.menu-subtitle {
+    font-size: 22rpx;
+    color: var(--muted-foreground);
+    letter-spacing: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* 兼容旧版 menu-item-content */
+.menu-item-content {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    pointer-events: none;
+}
+
+.menu-icon {
+    font-size: 36rpx;
+    width: 44rpx;
+    height: 44rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.menu-text {
+    font-size: 28rpx;
+    color: var(--foreground);
+    letter-spacing: -0.01em;
+}
+
+/* 旧版菜单列表样式 - 保留兼容 */
+.menu-list {
+    background-color: var(--card);
+    padding: 0 var(--spacing-lg);
+    border-radius: var(--radius-md);
+    margin: 0 var(--spacing-md);
+}
+
+.menu-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-lg) 0;
+    border-bottom: 1rpx solid var(--border);
+    background-color: transparent;
+    font-size: var(--text-base);
+    font-weight: 400;
+    width: 100%;
+    margin: 0;
+    border-radius: 0;
+    transition: background-color 0.15s;
+}
+
+.menu-item:active {
+    background-color: var(--muted);
+}
+
+.menu-item::after {
+    border: none;
+}
+
+.menu-item:last-child {
+    border-bottom: none;
+}
+
+/* 箭头图标 - shadcnUI 风格 */
+.arrow-icon {
+    width: 32rpx;
+    height: 32rpx;
+    flex-shrink: 0;
+    pointer-events: none; /* 让点击事件穿透到父级 button */
+}
+
+/* 旧版 arrow 兼容 */
+.arrow {
+    color: var(--muted-foreground);
+    font-size: var(--text-sm);
+    transition: transform 0.15s;
+}
+
+.menu-item:active .arrow {
+    transform: translateX(4rpx);
+}
+
+/* 底部信息 */
+.footer {
+    padding: var(--spacing-2xl) var(--spacing-lg);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.version {
+    font-size: 22rpx;
+    color: var(--muted-foreground);
+    letter-spacing: 0.02em;
+}
+
+.brand-text {
+    font-size: 24rpx;
+    color: var(--muted-foreground);
+    opacity: 0.6;
+    letter-spacing: 0.01em;
+}
+
+/* 安全区域 - 适配自定义 tabBar */
+.safe-area-bottom {
+    height: calc(100rpx + env(safe-area-inset-bottom)); /* tabBar 高度 + 安全区 */
+}
