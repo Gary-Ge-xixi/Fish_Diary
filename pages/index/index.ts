@@ -191,13 +191,27 @@ Page({
         await (this as any).onSaveWaterQuality()
       }
 
-      // 先关闭弹窗，提供即时反馈
+      // 关闭弹窗
       this.onCloseRecordPopup()
 
-      // 静默刷新列表（不显示 loading）
-      this.loadCombinedRecordsSilent()
+      // 强制设置为今天 + 重置所有状态 + 重新加载
+      const today = getTodayString()
+      this.setData({
+        today: today,
+        recordFilterDate: today,
+        feedingDate: today,
+        feedingPage: 1,
+        hasMoreFeeding: true,
+        waterChangePage: 1,
+        hasMoreWaterChange: true,
+        recordList: [],
+        feedingList: [],
+        waterChangeList: [],
+        waterQualityList: []
+      }, () => {
+        this.loadCombinedRecords()
+      })
     } catch (err) {
-      // 错误处理已在各 behavior 中完成
       logger.error('onSaveRecord error:', err)
     }
   },
@@ -245,14 +259,16 @@ Page({
   },
 
   onLoad() {
-    // 初始化日期
-    const today = new Date().toISOString().split('T')[0]
+    // 初始化日期（使用本地时间，与 getTodayString 保持一致）
+    const today = getTodayString()
     this.setData({
       feedingDate: today,
       today: today,
       recordFilterDate: today // 默认显示今日记录
-    });
-    (this as any).loadTanks()
+    })
+
+    // 加载鱼缸列表（loadTanks 内部会自动触发 loadCombinedRecords）
+    ;(this as any).loadTanks()
   },
 
   onHide() {
@@ -293,6 +309,16 @@ Page({
       })
     }
 
+    // 检查日期是否跨天，自动更新为今天
+    const today = getTodayString()
+    if (this.data.today !== today) {
+      this.setData({
+        today: today,
+        recordFilterDate: today,
+        feedingDate: today
+      })
+    }
+
     const app = getApp()
     const now = Date.now()
     const STATS_CACHE_TIME = 30000 // 30秒内不重复加载统计数据
@@ -328,6 +354,12 @@ Page({
         (this as any)[loaderName]()
       }
       app.clearDirty(config.dirtyKey)
+    }
+
+    // 备用机制：如果 recordList 为空且有鱼缸，触发数据加载
+    // 这是为了处理初始化时数据加载失败的情况
+    if (activeTab === 'records' && this.data.recordList.length === 0 && this.data.tanks.length > 0) {
+      this.loadCombinedRecords()
     }
   },
 
@@ -383,33 +415,21 @@ Page({
   },
 
   // 合并并排序记录列表
+  // 所有 behavior 已计算好 date、time、sortTime 字段，这里只需添加 type 并合并
   buildCombinedRecords(): any[] {
     const { feedingList, waterChangeList, waterQualityList, recordFilterDate } = this.data as any
 
     const records = [
-      ...feedingList.map((item: any) => {
-        const feedDate = item.feedTime ? new Date(item.feedTime) : new Date()
-        return {
-          ...item,
-          type: 'feeding',
-          date: feedDate.toISOString().split('T')[0],
-          sortTime: item.feedTime || Date.now()
-        }
-      }),
-      ...waterChangeList.map((item: any) => ({
-        ...item,
-        type: 'water-change',
-        sortTime: item.sortTime || new Date(item.date).getTime()
-      })),
-      ...waterQualityList.map((item: any) => ({
-        ...item,
-        type: 'water-quality',
-        date: item.date,
-        sortTime: item.sortTime || new Date(`${item.date} ${item.time || '00:00'}`).getTime()
-      }))
+      // 喂食记录
+      ...feedingList.map((item: any) => ({ ...item, type: 'feeding' })),
+      // 换水记录
+      ...waterChangeList.map((item: any) => ({ ...item, type: 'water-change' })),
+      // 水质记录
+      ...waterQualityList.map((item: any) => ({ ...item, type: 'water-quality' }))
     ]
 
-    records.sort((a, b) => b.sortTime - a.sortTime)
+    // 按 sortTime 降序排列（最新的在最上面）
+    records.sort((a, b) => (b.sortTime || 0) - (a.sortTime || 0))
 
     return recordFilterDate
       ? records.filter((item: any) => item.date === recordFilterDate)
@@ -418,6 +438,13 @@ Page({
 
   // 加载合并记录（喂养 + 换水 + 水质）
   async loadCombinedRecords() {
+    // 确保有当前鱼缸
+    if (!this.data.currentTank) {
+      logger.warn('loadCombinedRecords: currentTank 为空，跳过加载')
+      this.setData({ loading: false, recordList: [] })
+      return
+    }
+
     this.setData({ loading: true })
     try {
       await Promise.all([
@@ -457,18 +484,26 @@ Page({
   // 静默刷新记录列表（保存后无感更新）
   async loadCombinedRecordsSilent() {
     try {
-      // 重置分页状态，确保从第一页重新加载
-      this.setData({
-        feedingPage: 1,
-        hasMoreFeeding: true,
-        waterChangePage: 1,
-        hasMoreWaterChange: true
+      // 重置分页状态，使用回调确保数据更新后再加载
+      await new Promise<void>((resolve) => {
+        this.setData({
+          feedingPage: 1,
+          hasMoreFeeding: true,
+          waterChangePage: 1,
+          hasMoreWaterChange: true,
+          // 清空旧数据，避免合并时出现重复
+          feedingList: [],
+          waterChangeList: [],
+          waterQualityList: []
+        }, resolve)
       })
+      // 并行加载所有记录
       await Promise.all([
         (this as any).loadFeedingRecords(),
         (this as any).loadWaterChangeRecords(),
         (this as any).loadWaterQuality()
       ])
+      // 构建合并记录列表
       this.setData({ recordList: this.buildCombinedRecords() })
     } catch (err) {
       logger.error('静默刷新记录失败', err)

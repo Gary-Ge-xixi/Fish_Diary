@@ -1,6 +1,7 @@
 {
   "navigationBarTitleText": "鱼类百科",
   "navigationBarBackgroundColor": "#ffffff",
+  "backgroundColorTop": "#ffffff",
   "enablePullDownRefresh": false,
   "usingComponents": {
     "navigation-bar": "/components/navigation-bar/navigation-bar"

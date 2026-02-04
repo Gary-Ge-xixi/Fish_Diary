@@ -1,6 +1,8 @@
 <view class="page-container">
-  <!-- 导航栏 -->
-  <navigation-bar title="百科" back="{{false}}" color="black" background="#fff"></navigation-bar>
+  <!-- 导航栏 - Skyline 模式需要包裹容器设置固定高度 -->
+  <view class="nav-wrapper" style="height: 91px; overflow: hidden; background: #fff;">
+    <navigation-bar title="百科" back="{{false}}" color="black" background="#fff"></navigation-bar>
+  </view>
 
   <view class="content-wrapper">
     <!-- 搜索栏 -->

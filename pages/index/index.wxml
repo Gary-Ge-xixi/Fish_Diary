@@ -221,7 +221,7 @@
                                <text class="meta-label">换水量</text>
                                <text class="meta-value" style="color: #0891b2; font-weight: 600;">{{item.percent}}%</text>
                             </view>
-                            <text class="record-time">{{item.date}}</text>
+                            <text class="record-time">{{item.date}} {{item.time}}</text>
                          </view>
                       </block>
 

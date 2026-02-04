@@ -52,21 +52,32 @@ export const tankBehavior = Behavior({
   methods: {
     // 加载鱼缸列表
     async loadTanks() {
+      // 保存 this 引用，确保在回调中可用
+      const self = this
       this.setData({ loading: true })
 
       try {
         const result = await tankList({ page: 1, pageSize: 10 })
         const tanks = result.list || []
+        const firstTank = tanks.length > 0 ? tanks[0] : null
 
+        // 设置鱼缸数据
         this.setData({
           tanks,
           loading: false,
           currentTankIndex: 0,
-          currentTank: tanks.length > 0 ? tanks[0] : null
+          currentTank: firstTank
         })
 
-        if (tanks.length > 0) {
-          await this.loadTankStats(tanks[0]._id)
+        // 使用 setTimeout 确保 setData 完全生效（Skyline 模式下需要）
+        if (firstTank) {
+          setTimeout(() => {
+            self.loadTankStats(firstTank._id)
+            // 加载当前 Tab 的数据
+            if (typeof (self as any).loadCombinedRecords === 'function') {
+              (self as any).loadCombinedRecords()
+            }
+          }, 50)
         }
       } catch (err) {
         logger.error('loadTanks error:', err)
@@ -90,6 +101,7 @@ export const tankBehavior = Behavior({
 
     // 选择鱼缸
     onTankSelect(e: WechatMiniprogram.TouchEvent) {
+      const self = this
       const index = e.currentTarget.dataset.index as number
       const tank = this.data.tanks[index]
 
@@ -99,15 +111,33 @@ export const tankBehavior = Behavior({
         currentTankIndex: index,
         currentTank: tank,
         tankStats: null,
-        fishList: [] // 清空鱼类列表，等待重新加载
+        fishList: [],
+        // 清空记录相关数据
+        feedingList: [],
+        waterChangeList: [],
+        waterQualityList: [],
+        recordList: [],
+        // 重置分页状态
+        feedingPage: 1,
+        hasMoreFeeding: true,
+        waterChangePage: 1,
+        hasMoreWaterChange: true
       })
 
-      this.loadTankStats(tank._id)
+      // 使用 setTimeout 确保 setData 完全生效（Skyline 模式下需要）
+      setTimeout(() => {
+        self.loadTankStats(tank._id)
 
-      // 如果当前 Tab 是鱼类，重新加载列表
-      if (this.data.activeTab === 'fish') {
-        this.loadFishList()
-      }
+        // 根据当前 Tab 加载对应数据
+        if (self.data.activeTab === 'fish') {
+          self.loadFishList()
+        } else if (self.data.activeTab === 'records') {
+          // 加载记录数据
+          if (typeof (self as any).loadCombinedRecords === 'function') {
+            (self as any).loadCombinedRecords()
+          }
+        }
+      }, 50)
     },
 
     // 打开添加鱼缸弹窗

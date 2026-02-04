@@ -4,7 +4,7 @@
  */
 import { waterQualityRecordList, waterQualityRecordCreate } from '../../../utils/api'
 import { WaterQualityForm } from '../../../utils/types'
-import { getTodayString, formatTimestamp } from '../helpers/formatters'
+import { getTodayString, extractDateTimeFromServer } from '../helpers/formatters'
 import { getApp } from '../../../app'
 import { logger } from '../../../utils/logger'
 import { uploadImage } from '../../../utils/upload'
@@ -40,24 +40,31 @@ export const waterQualityBehavior = Behavior({
       this.setData({ waterQualityLoading: true })
 
       try {
-        if (!this.data.currentTank) return
+        if (!this.data.currentTank) {
+          this.setData({ waterQualityLoading: false })
+          return
+        }
 
         const res = await waterQualityRecordList({
           tankId: this.data.currentTank._id
         })
 
-        const list = res.list.map(item => ({
-          _id: item._id,
-          date: formatTimestamp(item.recordTime),
-          time: new Date(item.recordTime).toTimeString().slice(0, 5),
-          sortTime: new Date(item.recordTime).getTime(),
-          ph: item.ph,
-          temperature: item.temperature,
-          ammonia: item.ammonia,
-          nitrite: item.nitrite,
-          nitrate: item.nitrate,
-          imageUrl: item.images && item.images.length > 0 ? item.images[0] : ''
-        })) as WaterQualityRecord[]
+        const list = res.list.map(item => {
+          const dateTime = item.recordDate || item.createdAt
+          const { dateStr, timeStr, sortTime } = extractDateTimeFromServer(dateTime)
+          return {
+            _id: item._id,
+            date: dateStr,
+            time: timeStr,
+            sortTime,
+            ph: item.ph,
+            temperature: item.temperature,
+            ammonia: item.ammonia,
+            nitrite: item.nitrite,
+            nitrate: item.nitrate,
+            imageUrl: item.images && item.images.length > 0 ? item.images[0] : ''
+          }
+        }) as WaterQualityRecord[]
 
         this.setData({
           waterQualityList: list,
@@ -147,15 +154,15 @@ export const waterQualityBehavior = Behavior({
       this.setData({ saving: true })
 
       try {
+        if (!currentTank) throw new Error('未选择鱼缸')
+
         // 上传图片
         let fileID = ''
         if (waterQualityForm.imageUrl) {
           fileID = await uploadImage(waterQualityForm.imageUrl, 'quality', currentTank._id)
         }
 
-        if (!currentTank) throw new Error('未选择鱼缸')
-
-        // 使用今天日期 + 选择的时间（API 期望字符串格式）
+        // 使用今天日期 + 选择的时间（发送字符串给服务器）
         const today = getTodayString()
         const recordDate = `${today} ${waterQualityForm.time}:00`
 
@@ -171,14 +178,12 @@ export const waterQualityBehavior = Behavior({
         })
 
         wx.showToast({ title: '记录成功', icon: 'success' })
-        this.onCloseWaterQualityPopup()
-        // 重新加载水质记录（水质没有分页，无需重置）
-        this.loadWaterQuality()
         getApp().markDirty('waterQuality')
 
       } catch (err) {
         logger.error('saveWaterQuality error:', err)
         wx.showToast({ title: '保存失败', icon: 'none' })
+        throw err
       } finally {
         this.setData({ saving: false })
       }

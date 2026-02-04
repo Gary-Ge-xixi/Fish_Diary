@@ -4,7 +4,7 @@
  */
 import { feedingRecordList, feedingRecordCreate } from '../../../utils/api'
 import { FeedingForm } from '../../../utils/types'
-import { getTodayString, getCurrentTimeString } from '../helpers/formatters'
+import { getTodayString, getCurrentTimeString, safeDate } from '../helpers/formatters'
 import { getApp } from '../../../app'
 import { FOOD_TYPE_OPTIONS } from '../helpers/constants'
 import { logger } from '../../../utils/logger'
@@ -66,7 +66,7 @@ export const feedingBehavior = Behavior({
 
     // 加载喂养记录
     async loadFeedingRecords() {
-      if (!this.data.hasMoreFeeding && this.data.feedingPage > 1) return
+      if (!this.data.hasMoreFeeding) return
 
       // 第一页显示加载状态
       if (this.data.feedingPage === 1) {
@@ -88,25 +88,30 @@ export const feedingBehavior = Behavior({
         })
 
         const list = res.list.map(item => {
-          // 格式化时间 HH:mm
-          const date = new Date(item.feedTime)
-          const hour = date.getHours().toString().padStart(2, '0')
-          const minute = date.getMinutes().toString().padStart(2, '0')
+          // 解析喂食时间（feedTime 是时间戳或日期字符串）
+          const feedDate = safeDate(item.feedTime)
+          const y = feedDate.getFullYear()
+          const m = String(feedDate.getMonth() + 1).padStart(2, '0')
+          const d = String(feedDate.getDate()).padStart(2, '0')
+          const hour = feedDate.getHours().toString().padStart(2, '0')
+          const minute = feedDate.getMinutes().toString().padStart(2, '0')
 
           // 查找食物类型名称
           const typeOption = foodTypeOptions.find((opt) => opt.key === item.foodType)
           const foodTypeName = typeOption ? typeOption.label : '未知'
 
           return Object.assign({}, item, {
+            date: `${y}-${m}-${d}`,  // 与换水/水质保持一致
             time: `${hour}:${minute}`,
+            sortTime: feedDate.getTime(),  // 用于排序
             foodTypeName: foodTypeName
           }) as FeedingRecord
         })
 
         // 前端强制按时间倒序排序
         list.sort((a, b) => {
-          const timeA = a.feedTime ? new Date(a.feedTime).getTime() : 0
-          const timeB = b.feedTime ? new Date(b.feedTime).getTime() : 0
+          const timeA = a.feedTime ? safeDate(a.feedTime).getTime() : 0
+          const timeB = b.feedTime ? safeDate(b.feedTime).getTime() : 0
           return timeB - timeA
         })
 
@@ -239,7 +244,7 @@ export const feedingBehavior = Behavior({
 
         await feedingRecordCreate({
           tankId: currentTank._id,
-          feedTime: new Date(dateTimeStr).getTime(),
+          feedTime: safeDate(dateTimeStr).getTime(),
           foodType: feedingForm.foodType,
           foodName: foodName,
           amount: '适量',
@@ -248,15 +253,9 @@ export const feedingBehavior = Behavior({
 
         wx.showToast({ title: '记录成功', icon: 'success' })
         this.onCloseFeedingPopup()
+        // 由 index.ts 的 onSaveRecord/loadCombinedRecordsSilent 统一加载数据
+        // 注意：不再调用 loadFeedingRecords()，避免与 loadCombinedRecordsSilent 竞争
         getApp().markDirty('feeding')
-
-        this.setData({
-          feedingList: [],
-          feedingPage: 1,
-          hasMoreFeeding: true
-        }, () => {
-          this.loadFeedingRecords()
-        })
 
       } catch (err) {
         logger.error('saveFeedingRecord error:', err)
