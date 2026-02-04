@@ -13,11 +13,18 @@ page {
   background-color: var(--background);
 }
 
+/* 导航栏包裹容器 - Skyline 模式必须 */
+.nav-wrapper {
+  flex-shrink: 0;
+  width: 100%;
+}
+
 .content-wrapper {
   flex: 1;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  min-height: 0; /* Skyline: flex 子元素需要这个才能正确计算高度 */
 }
 
 /* 搜索栏 */
@@ -96,6 +103,7 @@ page {
 .wiki-scroll {
   flex: 1;
   background-color: var(--background);
+  min-height: 0; /* Skyline: flex 子元素需要这个才能正确滚动 */
 }
 
 .wiki-list {

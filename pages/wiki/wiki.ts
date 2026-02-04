@@ -87,13 +87,18 @@ Page({
     try {
       const res = await speciesGetCategories()
 
-      const cats = res.categories.map((cat: CategoryItem) => ({
-        _id: cat._id,
-        name: cat.name
-      }))
+      // 展平所有二级分类（subcategories）
+      const subcats: { _id: string; name: string }[] = []
+      res.categories.forEach((cat: CategoryItem) => {
+        if (cat.subcategories && cat.subcategories.length > 0) {
+          cat.subcategories.forEach(sub => {
+            subcats.push({ _id: sub._id, name: sub.name })
+          })
+        }
+      })
 
       this.setData({
-        categories: [{ _id: 'all', name: '全部' }, ...cats]
+        categories: [{ _id: 'all', name: '全部' }, ...subcats]
       })
     } catch (err) {
       logger.error('加载分类失败:', err)
@@ -113,14 +118,14 @@ Page({
         // 搜索模式
         res = await speciesSearch({
           keyword: searchQuery.trim(),
-          categoryId: activeCategory !== 'all' ? activeCategory : undefined,
+          subcategoryId: activeCategory !== 'all' ? activeCategory : undefined,
           page: reset ? 1 : page,
           pageSize: 20
         })
       } else {
         // 列表模式
         res = await speciesList({
-          categoryId: activeCategory !== 'all' ? activeCategory : undefined,
+          subcategoryId: activeCategory !== 'all' ? activeCategory : undefined,
           page: reset ? 1 : page,
           pageSize: 20
         })

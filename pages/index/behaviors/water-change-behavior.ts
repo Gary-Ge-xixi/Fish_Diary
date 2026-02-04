@@ -4,7 +4,7 @@
  */
 import { waterChangeRecordList, waterChangeRecordCreate } from '../../../utils/api'
 import { WaterChangeForm } from '../../../utils/types'
-import { getTodayString, formatTimestamp } from '../helpers/formatters'
+import { getTodayString, extractDateTimeFromServer } from '../helpers/formatters'
 import { getApp } from '../../../app'
 import { logger } from '../../../utils/logger'
 
@@ -33,12 +33,16 @@ export const waterChangeBehavior = Behavior({
   methods: {
     // 加载换水记录
     async loadWaterChangeRecords() {
-      if (!this.data.hasMoreWaterChange && this.data.waterChangePage > 1) return
+      if (!this.data.hasMoreWaterChange) return
 
       this.setData({ waterChangeLoading: true })
 
       try {
-        if (!this.data.currentTank) return
+        // 判空时重置 loading 状态
+        if (!this.data.currentTank) {
+          this.setData({ waterChangeLoading: false })
+          return
+        }
 
         const { waterChangePage } = this.data
 
@@ -50,18 +54,13 @@ export const waterChangeBehavior = Behavior({
 
         const list = res.list.map(item => {
           const dateTime = item.changeDate || item.createdAt
-          const dateObj = new Date(dateTime)
-          // 提取日期部分（格式如 "2026-01-09 16:30:00" 或时间戳）
-          const dateStr = typeof dateTime === 'string' && dateTime.includes(' ')
-            ? dateTime.split(' ')[0]
-            : formatTimestamp(dateTime)
-          const timeStr = dateObj.toTimeString().slice(0, 5) // HH:mm 格式
+          const { dateStr, timeStr, sortTime } = extractDateTimeFromServer(dateTime)
           return {
             _id: item._id,
             percent: item.percentage,
             date: dateStr,
             time: timeStr,
-            sortTime: dateObj.getTime()
+            sortTime
           }
         }) as any as WaterChangeRecord[]
 
@@ -129,7 +128,7 @@ export const waterChangeBehavior = Behavior({
       try {
         if (!currentTank) throw new Error('未选择鱼缸')
 
-        // 使用今天日期 + 选择的时间（API 期望字符串格式）
+        // 使用今天日期 + 选择的时间（发送字符串给服务器）
         const today = getTodayString()
         const changeDate = `${today} ${waterChangeForm.time}:00`
 
@@ -140,15 +139,12 @@ export const waterChangeBehavior = Behavior({
         })
 
         wx.showToast({ title: '记录成功', icon: 'success' })
-        this.onCloseWaterChangePopup()
-        // 重置分页状态后重新加载
-        this.setData({ waterChangePage: 1, hasMoreWaterChange: true })
-        this.loadWaterChangeRecords()
         getApp().markDirty('waterChange')
 
       } catch (err) {
         logger.error('saveWaterChange error:', err)
         wx.showToast({ title: '保存失败', icon: 'none' })
+        throw err
       } finally {
         this.setData({ saving: false })
       }
