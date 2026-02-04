@@ -27,13 +27,13 @@ export const TABS = [
 
 // 设备类型
 export const EQUIPMENT_TYPES = [
-  { key: 'filter', label: '过滤设备' },
   { key: 'heater', label: '加热棒' },
+  { key: 'pump', label: '氧气泵/水泵' },
   { key: 'light', label: '灯具' },
-  { key: 'air_pump', label: '氧气泵' },
-  { key: 'uv_lamp', label: '杀菌灯' },
-  { key: 'water_pump', label: '水泵' },
-  { key: 'filter_media', label: '滤材' }
+  { key: 'filter', label: '过滤设备' },
+  { key: 'material', label: '滤材' },
+  { key: 'uv', label: '杀菌灯' },
+  { key: 'other', label: '其他' }
 ]
 
 // 过滤类型

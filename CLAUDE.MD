@@ -348,22 +348,28 @@ Component({
 
 #### 步骤 2：在页面中控制 TabBar 显示/隐藏
 
+**注意**：Skyline 模式下 `getTabBar()` 是异步的，必须使用回调方式：
+
 ```typescript
 // pages/xxx/xxx.ts
 Page({
-  // 打开弹窗时隐藏 TabBar
+  // 打开弹窗时隐藏 TabBar（Skyline 模式下异步）
   onOpenPopup() {
-    if (typeof this.getTabBar === 'function' && this.getTabBar()) {
-      this.getTabBar().setData({ hidden: true })
+    if (typeof this.getTabBar === 'function') {
+      this.getTabBar((tabBar: any) => {
+        tabBar.setData({ hidden: true })
+      })
     }
     this.setData({ showPopup: true })
   },
 
-  // 关闭弹窗时恢复 TabBar
+  // 关闭弹窗时恢复 TabBar（Skyline 模式下异步）
   onClosePopup() {
     this.setData({ showPopup: false })
-    if (typeof this.getTabBar === 'function' && this.getTabBar()) {
-      this.getTabBar().setData({ hidden: false })
+    if (typeof this.getTabBar === 'function') {
+      this.getTabBar((tabBar: any) => {
+        tabBar.setData({ hidden: false })
+      })
     }
   }
 })
@@ -376,18 +382,22 @@ Page({
 export const xxxBehavior = Behavior({
   methods: {
     onAddXxx() {
-      // 隐藏 TabBar
-      if (typeof this.getTabBar === 'function' && this.getTabBar()) {
-        this.getTabBar().setData({ hidden: true })
+      // 隐藏 TabBar（Skyline 模式下异步）
+      if (typeof this.getTabBar === 'function') {
+        this.getTabBar((tabBar: any) => {
+          tabBar.setData({ hidden: true })
+        })
       }
       this.setData({ showXxxPopup: true })
     },
 
     onCloseXxxPopup() {
       this.setData({ showXxxPopup: false })
-      // 恢复显示 TabBar
-      if (typeof this.getTabBar === 'function' && this.getTabBar()) {
-        this.getTabBar().setData({ hidden: false })
+      // 恢复显示 TabBar（Skyline 模式下异步）
+      if (typeof this.getTabBar === 'function') {
+        this.getTabBar((tabBar: any) => {
+          tabBar.setData({ hidden: false })
+        })
       }
     }
   }
@@ -397,7 +407,7 @@ export const xxxBehavior = Behavior({
 ### 关键要点
 
 1. **使用 `wx:if` 而非 CSS display:none**：确保 TabBar 完全从渲染树移除
-2. **防御性检查 getTabBar**：使用 `typeof this.getTabBar === 'function' && this.getTabBar()` 避免报错
+2. **Skyline 模式下 getTabBar 是异步的**：必须使用回调方式 `this.getTabBar((tabBar) => { ... })`
 3. **成对操作**：每个打开弹窗的方法都要有对应的关闭方法来恢复 TabBar
 4. **所有弹窗统一处理**：项目中所有弹窗都需要添加此逻辑，包括：
    - 添加记录弹窗

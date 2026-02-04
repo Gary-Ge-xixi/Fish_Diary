@@ -118,16 +118,20 @@ Page({
     // 空函数，仅用于阻止事件冒泡
   },
 
-  // 控制 TabBar 显示/隐藏（用于弹窗覆盖）
+  // 控制 TabBar 显示/隐藏（用于弹窗覆盖，Skyline 模式下异步）
   hideTabBar() {
-    if (typeof this.getTabBar === 'function' && this.getTabBar()) {
-      this.getTabBar().setData({ hidden: true })
+    if (typeof this.getTabBar === 'function') {
+      this.getTabBar((tabBar: any) => {
+        tabBar.setData({ hidden: true })
+      })
     }
   },
 
   showTabBar() {
-    if (typeof this.getTabBar === 'function' && this.getTabBar()) {
-      this.getTabBar().setData({ hidden: false })
+    if (typeof this.getTabBar === 'function') {
+      this.getTabBar((tabBar: any) => {
+        tabBar.setData({ hidden: false })
+      })
     }
   },
 
@@ -252,6 +256,9 @@ Page({
   },
 
   onHide() {
+    // 选择图片时不关闭弹窗（wx.chooseMedia 会触发 onHide）
+    if ((this as any)._isChoosingImage) return
+
     // 页面隐藏时关闭所有弹窗，避免 page-container "Only one instance" 错误
     if (this.data.showAddTankPopup) {
       this.setData({ showAddTankPopup: false })
@@ -279,9 +286,11 @@ Page({
       animation: { duration: 0, timingFunc: 'linear' }
     })
 
-    // 设置自定义 tabBar 选中状态
-    if (typeof this.getTabBar === 'function' && this.getTabBar()) {
-      this.getTabBar().setData({ selected: 0 })
+    // 设置自定义 tabBar 选中状态（Skyline 模式下 getTabBar 是异步的）
+    if (typeof this.getTabBar === 'function') {
+      this.getTabBar((tabBar: any) => {
+        tabBar.setData({ selected: 0 })
+      })
     }
 
     const app = getApp()
@@ -373,56 +382,50 @@ Page({
     })
   },
 
+  // 合并并排序记录列表
+  buildCombinedRecords(): any[] {
+    const { feedingList, waterChangeList, waterQualityList, recordFilterDate } = this.data as any
+
+    const records = [
+      ...feedingList.map((item: any) => {
+        const feedDate = item.feedTime ? new Date(item.feedTime) : new Date()
+        return {
+          ...item,
+          type: 'feeding',
+          date: feedDate.toISOString().split('T')[0],
+          sortTime: item.feedTime || Date.now()
+        }
+      }),
+      ...waterChangeList.map((item: any) => ({
+        ...item,
+        type: 'water-change',
+        sortTime: item.sortTime || new Date(item.date).getTime()
+      })),
+      ...waterQualityList.map((item: any) => ({
+        ...item,
+        type: 'water-quality',
+        date: item.date,
+        sortTime: item.sortTime || new Date(`${item.date} ${item.time || '00:00'}`).getTime()
+      }))
+    ]
+
+    records.sort((a, b) => b.sortTime - a.sortTime)
+
+    return recordFilterDate
+      ? records.filter((item: any) => item.date === recordFilterDate)
+      : records
+  },
+
   // 加载合并记录（喂养 + 换水 + 水质）
   async loadCombinedRecords() {
     this.setData({ loading: true })
     try {
-      // 并行加载喂养、换水、水质记录
       await Promise.all([
         (this as any).loadFeedingRecords(),
         (this as any).loadWaterChangeRecords(),
         (this as any).loadWaterQuality()
       ])
-
-      const { feedingList, waterChangeList, waterQualityList, recordFilterDate } = this.data as any
-
-      // 转换格式以便统一展示
-      const records = [
-        ...feedingList.map((item: any) => {
-          // 从 feedTime 时间戳提取日期
-          const feedDate = item.feedTime ? new Date(item.feedTime) : new Date()
-          const dateStr = feedDate.toISOString().split('T')[0]
-          return {
-            ...item,
-            type: 'feeding',
-            date: dateStr,
-            sortTime: item.feedTime || Date.now()
-          }
-        }),
-        ...waterChangeList.map((item: any) => ({
-          ...item,
-          type: 'water-change',
-          // date 和 time 已在 behavior 中正确解析
-          sortTime: item.sortTime || new Date(item.date).getTime()
-        })),
-        ...waterQualityList.map((item: any) => ({
-          ...item,
-          type: 'water-quality',
-          date: item.date,
-          sortTime: item.sortTime || new Date(`${item.date} ${item.time || '00:00'}`).getTime()
-        }))
-      ]
-
-      // 按时间倒序排序
-      records.sort((a, b) => b.sortTime - a.sortTime)
-
-      // 日期筛选（仅当选择日期时筛选）
-      let filteredRecords = records
-      if (recordFilterDate) {
-        filteredRecords = records.filter((item: any) => item.date === recordFilterDate)
-      }
-
-      this.setData({ recordList: filteredRecords, loading: false })
+      this.setData({ recordList: this.buildCombinedRecords(), loading: false })
     } catch (err) {
       logger.error('合并记录加载失败', err)
       this.setData({ loading: false })
@@ -434,13 +437,9 @@ Page({
     const date = e.detail.value as string
     this.setData({
       recordFilterDate: date,
-      feedingDate: date // 同步更新 feeding behavior 的日期
-    })
-
-    // 重新加载记录
-    this.setData({
+      feedingDate: date,
       recordList: [],
-      feedingList: [], // 清空喂养列表
+      feedingList: [],
       feedingPage: 1,
       hasMoreFeeding: true
     }, () => {
@@ -450,62 +449,28 @@ Page({
 
   // 清除日期筛选 (返回今日)
   onClearRecordFilter() {
-    const today = getTodayString()
     this.onRecordFilterDateChange({
-      detail: { value: today }
+      detail: { value: getTodayString() }
     } as WechatMiniprogram.PickerChange)
   },
 
-  // 静默刷新记录列表（不显示 loading 状态，用于保存后无感更新）
+  // 静默刷新记录列表（保存后无感更新）
   async loadCombinedRecordsSilent() {
     try {
-      // 并行加载喂养、换水、水质记录
+      // 重置分页状态，确保从第一页重新加载
+      this.setData({
+        feedingPage: 1,
+        hasMoreFeeding: true,
+        waterChangePage: 1,
+        hasMoreWaterChange: true
+      })
       await Promise.all([
         (this as any).loadFeedingRecords(),
         (this as any).loadWaterChangeRecords(),
         (this as any).loadWaterQuality()
       ])
-
-      const { feedingList, waterChangeList, waterQualityList, recordFilterDate } = this.data as any
-
-      // 转换格式以便统一展示
-      const records = [
-        ...feedingList.map((item: any) => {
-          const feedDate = item.feedTime ? new Date(item.feedTime) : new Date()
-          const dateStr = feedDate.toISOString().split('T')[0]
-          return {
-            ...item,
-            type: 'feeding',
-            date: dateStr,
-            sortTime: item.feedTime || Date.now()
-          }
-        }),
-        ...waterChangeList.map((item: any) => ({
-          ...item,
-          type: 'water-change',
-          sortTime: item.sortTime || new Date(item.date).getTime()
-        })),
-        ...waterQualityList.map((item: any) => ({
-          ...item,
-          type: 'water-quality',
-          date: item.date,
-          sortTime: item.sortTime || new Date(`${item.date} ${item.time || '00:00'}`).getTime()
-        }))
-      ]
-
-      // 按时间倒序排序
-      records.sort((a, b) => b.sortTime - a.sortTime)
-
-      // 日期筛选
-      let filteredRecords = records
-      if (recordFilterDate) {
-        filteredRecords = records.filter((item: any) => item.date === recordFilterDate)
-      }
-
-      // 静默更新，不设置 loading
-      this.setData({ recordList: filteredRecords })
+      this.setData({ recordList: this.buildCombinedRecords() })
     } catch (err) {
-      // 静默失败，不影响用户体验
       logger.error('静默刷新记录失败', err)
     }
   },

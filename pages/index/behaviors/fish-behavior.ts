@@ -11,6 +11,7 @@ import {
   getCategoriesTree
 } from '../../../utils/api'
 import { FishListItem, FishForm, EditFishForm } from '../../../utils/types'
+import { formatTimestamp } from '../helpers/formatters'
 import { getApp } from '../../../app'
 import { logger } from '../../../utils/logger'
 
@@ -53,15 +54,6 @@ export const fishBehavior = Behavior({
   } as FishBehaviorData,
 
   methods: {
-    // 辅助方法：格式化日期 YYYY/MM/DD
-    formatDate(isoString: string): string {
-      const date = new Date(isoString)
-      const y = date.getFullYear()
-      const m = (date.getMonth() + 1).toString().padStart(2, '0')
-      const d = date.getDate().toString().padStart(2, '0')
-      return `${y}/${m}/${d}`
-    },
-
     // 加载鱼类列表
     async loadFishList() {
       try {
@@ -71,7 +63,7 @@ export const fishBehavior = Behavior({
         })
 
         const list = result.list.map(item => Object.assign({}, item, {
-          purchaseDateDisplay: this.formatDate(item.purchaseDate),
+          purchaseDateDisplay: formatTimestamp(item.purchaseDate, '/'),
           totalPriceDisplay: (item.purchasePrice * item.quantity).toFixed(0)
         })) as FishListItem[]
 
@@ -134,9 +126,11 @@ export const fishBehavior = Behavior({
 
     // 打开添加鱼类弹窗
     onAddFish() {
-      // 隐藏 TabBar
-      if (typeof this.getTabBar === 'function' && this.getTabBar()) {
-        this.getTabBar().setData({ hidden: true })
+      // 隐藏 TabBar（Skyline 模式下异步）
+      if (typeof this.getTabBar === 'function') {
+        this.getTabBar((tabBar: any) => {
+          tabBar.setData({ hidden: true })
+        })
       }
       this.setData({
         showFishPopup: true,
@@ -153,9 +147,11 @@ export const fishBehavior = Behavior({
     // 关闭添加鱼类弹窗
     onCloseFishPopup() {
       this.setData({ showFishPopup: false })
-      // 恢复显示 TabBar
-      if (typeof this.getTabBar === 'function' && this.getTabBar()) {
-        this.getTabBar().setData({ hidden: false })
+      // 恢复显示 TabBar（Skyline 模式下异步）
+      if (typeof this.getTabBar === 'function') {
+        this.getTabBar((tabBar: any) => {
+          tabBar.setData({ hidden: false })
+        })
       }
     },
 
@@ -265,9 +261,11 @@ export const fishBehavior = Behavior({
       const fish = this.data.fishList.find((f) => f._id === id)
       if (!fish) return
 
-      // 隐藏 TabBar
-      if (typeof this.getTabBar === 'function' && this.getTabBar()) {
-        this.getTabBar().setData({ hidden: true })
+      // 隐藏 TabBar（Skyline 模式下异步）
+      if (typeof this.getTabBar === 'function') {
+        this.getTabBar((tabBar: any) => {
+          tabBar.setData({ hidden: true })
+        })
       }
 
       const fishTankIndex = this.data.tanks.findIndex(t => t._id === fish.tankId)
@@ -291,9 +289,11 @@ export const fishBehavior = Behavior({
     // 关闭编辑鱼类弹窗
     onCloseFishEditPopup() {
       this.setData({ showFishEditPopup: false })
-      // 恢复显示 TabBar
-      if (typeof this.getTabBar === 'function' && this.getTabBar()) {
-        this.getTabBar().setData({ hidden: false })
+      // 恢复显示 TabBar（Skyline 模式下异步）
+      if (typeof this.getTabBar === 'function') {
+        this.getTabBar((tabBar: any) => {
+          tabBar.setData({ hidden: false })
+        })
       }
     },
 

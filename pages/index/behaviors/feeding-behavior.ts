@@ -133,9 +133,11 @@ export const feedingBehavior = Behavior({
 
     // 打开添加喂养记录弹窗
     onAddFeeding() {
-      // 隐藏 TabBar
-      if (typeof this.getTabBar === 'function' && this.getTabBar()) {
-        this.getTabBar().setData({ hidden: true })
+      // 隐藏 TabBar（Skyline 模式下异步）
+      if (typeof this.getTabBar === 'function') {
+        this.getTabBar((tabBar: any) => {
+          tabBar.setData({ hidden: true })
+        })
       }
       this.setData({
         showFeedingPopup: true,
@@ -152,9 +154,11 @@ export const feedingBehavior = Behavior({
     // 关闭喂养记录弹窗
     onCloseFeedingPopup() {
       this.setData({ showFeedingPopup: false })
-      // 恢复显示 TabBar
-      if (typeof this.getTabBar === 'function' && this.getTabBar()) {
-        this.getTabBar().setData({ hidden: false })
+      // 恢复显示 TabBar（Skyline 模式下异步）
+      if (typeof this.getTabBar === 'function') {
+        this.getTabBar((tabBar: any) => {
+          tabBar.setData({ hidden: false })
+        })
       }
     },
 
@@ -189,6 +193,8 @@ export const feedingBehavior = Behavior({
 
     // 选择喂养图片
     async onChooseFeedingImage() {
+      // 设置标记，防止 onHide 关闭弹窗
+      (this as any)._isChoosingImage = true
       try {
         const res = await wx.chooseMedia({
           count: 1,
@@ -200,6 +206,8 @@ export const feedingBehavior = Behavior({
         })
       } catch {
         // 用户取消选择
+      } finally {
+        (this as any)._isChoosingImage = false
       }
     },
 

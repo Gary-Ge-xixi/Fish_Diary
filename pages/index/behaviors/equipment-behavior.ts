@@ -5,19 +5,9 @@
 import { equipmentList, equipmentCreate } from '../../../utils/api'
 import { EquipmentForm } from '../../../utils/types'
 import { getTodayString } from '../helpers/formatters'
+import { EQUIPMENT_TYPES } from '../helpers/constants'
 import { getApp } from '../../../app'
 import { logger } from '../../../utils/logger'
-
-// 设备类型
-const EQUIPMENT_TYPES = [
-  { key: 'heater', label: '加热棒' },
-  { key: 'pump', label: '氧气泵/水泵' },
-  { key: 'light', label: '灯具' },
-  { key: 'filter', label: '过滤设备' },
-  { key: 'material', label: '滤材' },
-  { key: 'uv', label: '杀菌灯' },
-  { key: 'other', label: '其他' }
-]
 
 interface EquipmentBehaviorData {
   equipmentList: Equipment[]
@@ -78,9 +68,11 @@ export const equipmentBehavior = Behavior({
 
     // 打开添加设备弹窗
     onAddEquipment() {
-      // 隐藏 TabBar
-      if (typeof this.getTabBar === 'function' && this.getTabBar()) {
-        this.getTabBar().setData({ hidden: true })
+      // 隐藏 TabBar（Skyline 模式下异步）
+      if (typeof this.getTabBar === 'function') {
+        this.getTabBar((tabBar: any) => {
+          tabBar.setData({ hidden: true })
+        })
       }
       this.setData({
         showEquipmentPopup: true,
@@ -99,9 +91,11 @@ export const equipmentBehavior = Behavior({
     // 关闭设备弹窗
     onCloseEquipmentPopup() {
       this.setData({ showEquipmentPopup: false })
-      // 恢复显示 TabBar
-      if (typeof this.getTabBar === 'function' && this.getTabBar()) {
-        this.getTabBar().setData({ hidden: false })
+      // 恢复显示 TabBar（Skyline 模式下异步）
+      if (typeof this.getTabBar === 'function') {
+        this.getTabBar((tabBar: any) => {
+          tabBar.setData({ hidden: false })
+        })
       }
     },
 

@@ -44,13 +44,14 @@ export function formatDateFriendly(dateStr: string): string {
 
 /**
  * 格式化时间戳为日期字符串
+ * @param separator 分隔符，默认 '-'
  */
-export function formatTimestamp(timestamp: number | string | Date): string {
+export function formatTimestamp(timestamp: number | string | Date, separator = '-'): string {
   const date = new Date(timestamp)
   const y = date.getFullYear()
   const m = String(date.getMonth() + 1).padStart(2, '0')
   const d = String(date.getDate()).padStart(2, '0')
-  return `${y}-${m}-${d}`
+  return `${y}${separator}${m}${separator}${d}`
 }
 
 /**

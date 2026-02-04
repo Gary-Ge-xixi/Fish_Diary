@@ -81,9 +81,11 @@ export const waterChangeBehavior = Behavior({
 
     // 打开添加换水记录弹窗
     onAddWaterChange() {
-      // 隐藏 TabBar
-      if (typeof this.getTabBar === 'function' && this.getTabBar()) {
-        this.getTabBar().setData({ hidden: true })
+      // 隐藏 TabBar（Skyline 模式下异步）
+      if (typeof this.getTabBar === 'function') {
+        this.getTabBar((tabBar: any) => {
+          tabBar.setData({ hidden: true })
+        })
       }
       this.setData({
         showWaterChangePopup: true,
@@ -97,9 +99,11 @@ export const waterChangeBehavior = Behavior({
     // 关闭换水记录弹窗
     onCloseWaterChangePopup() {
       this.setData({ showWaterChangePopup: false })
-      // 恢复显示 TabBar
-      if (typeof this.getTabBar === 'function' && this.getTabBar()) {
-        this.getTabBar().setData({ hidden: false })
+      // 恢复显示 TabBar（Skyline 模式下异步）
+      if (typeof this.getTabBar === 'function') {
+        this.getTabBar((tabBar: any) => {
+          tabBar.setData({ hidden: false })
+        })
       }
     },
 
@@ -137,6 +141,8 @@ export const waterChangeBehavior = Behavior({
 
         wx.showToast({ title: '记录成功', icon: 'success' })
         this.onCloseWaterChangePopup()
+        // 重置分页状态后重新加载
+        this.setData({ waterChangePage: 1, hasMoreWaterChange: true })
         this.loadWaterChangeRecords()
         getApp().markDirty('waterChange')
 

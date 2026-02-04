@@ -1,5 +1,12 @@
 import { speciesGetCategories, speciesList, speciesSearch } from '../../utils/api'
 import { logger } from '../../utils/logger'
+import {
+  formatTemperature,
+  formatPh,
+  formatSize,
+  getDifficultyLabel,
+  getTemperamentLabel
+} from '../../utils/formatters'
 
 // 云端鱼种数据类型
 interface CloudFishSpecies {
@@ -68,9 +75,11 @@ Page({
       animation: { duration: 0, timingFunc: 'linear' }
     })
 
-    // 设置自定义 tabBar 选中状态
-    if (typeof this.getTabBar === 'function' && this.getTabBar()) {
-      this.getTabBar().setData({ selected: 1 })
+    // 设置自定义 tabBar 选中状态（Skyline 模式下 getTabBar 是异步的）
+    if (typeof this.getTabBar === 'function') {
+      this.getTabBar((tabBar: any) => {
+        tabBar.setData({ selected: 1 })
+      })
     }
   },
 
@@ -195,9 +204,11 @@ Page({
     const fish = this.data.fishList.find(f => f._id === id) || null
 
     if (fish) {
-      // 隐藏 TabBar
-      if (typeof this.getTabBar === 'function' && this.getTabBar()) {
-        this.getTabBar().setData({ hidden: true })
+      // 隐藏 TabBar（Skyline 模式下异步）
+      if (typeof this.getTabBar === 'function') {
+        this.getTabBar((tabBar: any) => {
+          tabBar.setData({ hidden: true })
+        })
       }
       this.setData({
         currentFish: fish,
@@ -208,9 +219,11 @@ Page({
 
   onCloseDetail() {
     this.setData({ showDetailPopup: false })
-    // 恢复显示 TabBar
-    if (typeof this.getTabBar === 'function' && this.getTabBar()) {
-      this.getTabBar().setData({ hidden: false })
+    // 恢复显示 TabBar（Skyline 模式下异步）
+    if (typeof this.getTabBar === 'function') {
+      this.getTabBar((tabBar: any) => {
+        tabBar.setData({ hidden: false })
+      })
     }
   },
 
@@ -219,41 +232,10 @@ Page({
     // 空函数，仅用于阻止事件冒泡
   },
 
-  // 辅助函数：格式化温度范围
-  formatTemperature(temp?: { min: number; max: number }): string {
-    if (!temp) return '-'
-    return `${temp.min}-${temp.max}°C`
-  },
-
-  // 辅助函数：格式化 pH 范围
-  formatPh(ph?: { min: number; max: number }): string {
-    if (!ph) return '-'
-    return `${ph.min}-${ph.max}`
-  },
-
-  // 辅助函数：格式化体型
-  formatSize(size?: { min: number; max: number }): string {
-    if (!size) return '-'
-    return `${size.min}-${size.max} cm`
-  },
-
-  // 辅助函数：获取难度标签
-  getDifficultyLabel(difficulty?: string): string {
-    const map: Record<string, string> = {
-      easy: '容易',
-      medium: '中等',
-      hard: '困难'
-    }
-    return map[difficulty || ''] || '-'
-  },
-
-  // 辅助函数：获取性格标签
-  getTemperamentLabel(temperament?: string): string {
-    const map: Record<string, string> = {
-      peaceful: '温和',
-      'semi-aggressive': '半攻击性',
-      aggressive: '攻击性'
-    }
-    return map[temperament || ''] || '-'
-  }
+  // 包装公共格式化函数以供模板使用
+  formatTemperature,
+  formatPh,
+  formatSize,
+  getDifficultyLabel,
+  getTemperamentLabel
 })
