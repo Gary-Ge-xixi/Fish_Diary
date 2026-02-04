@@ -112,9 +112,11 @@ export const tankBehavior = Behavior({
 
     // 打开添加鱼缸弹窗
     onAddTank() {
-      // 隐藏 TabBar
-      if (typeof this.getTabBar === 'function' && this.getTabBar()) {
-        this.getTabBar().setData({ hidden: true })
+      // 隐藏 TabBar（Skyline 模式下异步）
+      if (typeof this.getTabBar === 'function') {
+        this.getTabBar((tabBar: any) => {
+          tabBar.setData({ hidden: true })
+        })
       }
       this.setData({
         showAddTankPopup: true,
@@ -126,14 +128,18 @@ export const tankBehavior = Behavior({
     // 关闭添加鱼缸弹窗
     onCloseAddTank() {
       this.setData({ showAddTankPopup: false })
-      // 恢复显示 TabBar
-      if (typeof this.getTabBar === 'function' && this.getTabBar()) {
-        this.getTabBar().setData({ hidden: false })
+      // 恢复显示 TabBar（Skyline 模式下异步）
+      if (typeof this.getTabBar === 'function') {
+        this.getTabBar((tabBar: any) => {
+          tabBar.setData({ hidden: false })
+        })
       }
     },
 
     // 选择鱼缸图片
     async onChooseTankImage() {
+      // 设置标记，防止 onHide 关闭弹窗
+      (this as any)._isChoosingImage = true
       try {
         const res = await wx.chooseMedia({
           count: 1,
@@ -147,6 +153,9 @@ export const tankBehavior = Behavior({
         })
       } catch {
         // 用户取消选择
+      } finally {
+        // 清除标记
+        (this as any)._isChoosingImage = false
       }
     },
 

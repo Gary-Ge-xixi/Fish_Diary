@@ -75,9 +75,11 @@ export const waterQualityBehavior = Behavior({
 
     // 打开添加水质记录弹窗
     onAddWaterQuality() {
-      // 隐藏 TabBar
-      if (typeof this.getTabBar === 'function' && this.getTabBar()) {
-        this.getTabBar().setData({ hidden: true })
+      // 隐藏 TabBar（Skyline 模式下异步）
+      if (typeof this.getTabBar === 'function') {
+        this.getTabBar((tabBar: any) => {
+          tabBar.setData({ hidden: true })
+        })
       }
       this.setData({
         showWaterQualityPopup: true,
@@ -96,9 +98,11 @@ export const waterQualityBehavior = Behavior({
     // 关闭水质记录弹窗
     onCloseWaterQualityPopup() {
       this.setData({ showWaterQualityPopup: false })
-      // 恢复显示 TabBar
-      if (typeof this.getTabBar === 'function' && this.getTabBar()) {
-        this.getTabBar().setData({ hidden: false })
+      // 恢复显示 TabBar（Skyline 模式下异步）
+      if (typeof this.getTabBar === 'function') {
+        this.getTabBar((tabBar: any) => {
+          tabBar.setData({ hidden: false })
+        })
       }
     },
 
@@ -119,6 +123,8 @@ export const waterQualityBehavior = Behavior({
 
     // 选择水质图片
     async onChooseQualityImage() {
+      // 设置标记，防止 onHide 关闭弹窗
+      (this as any)._isChoosingImage = true
       try {
         const res = await wx.chooseMedia({
           count: 1,
@@ -130,6 +136,8 @@ export const waterQualityBehavior = Behavior({
         })
       } catch {
         // 用户取消选择
+      } finally {
+        (this as any)._isChoosingImage = false
       }
     },
 
@@ -164,6 +172,7 @@ export const waterQualityBehavior = Behavior({
 
         wx.showToast({ title: '记录成功', icon: 'success' })
         this.onCloseWaterQualityPopup()
+        // 重新加载水质记录（水质没有分页，无需重置）
         this.loadWaterQuality()
         getApp().markDirty('waterQuality')
 

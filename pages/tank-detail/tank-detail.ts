@@ -163,6 +163,8 @@ Page({
 
   // 点击封面更换照片
   async onChangeCover() {
+    // 设置标记，防止 onHide 关闭弹窗
+    (this as any)._isChoosingImage = true
     try {
       const res = await wx.chooseMedia({
         count: 1,
@@ -204,6 +206,8 @@ Page({
       wx.hideLoading()
       logger.error('更换封面失败:', err)
       wx.showToast({ title: '更换失败', icon: 'none' })
+    } finally {
+      (this as any)._isChoosingImage = false
     }
   },
 
@@ -252,6 +256,9 @@ Page({
   },
 
   onHide() {
+    // 选择图片时不关闭弹窗（wx.chooseMedia 会触发 onHide）
+    if ((this as any)._isChoosingImage) return
+
     // 页面隐藏时关闭弹窗，避免 page-container "Only one instance" 错误
     if (this.data.showEditPopup) {
       this.setData({ showEditPopup: false })
